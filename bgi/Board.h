@@ -1,15 +1,17 @@
 #pragma once
 #include"Player.h"
+#include"graphics.h"
 class Piece;
 class Board
 {
 protected:
 	//boon.............
 	// testing new hadeed account
-	Piece* Ps;
+	Piece*** B;
 	int Nop;
-	Player* Ps;
+	//Player* Ps;
 	int Dice;
+	Position S,E;
 public:
 	void init(); //init the arrays , Turn, NOP ,Pieces etc
 	int RollDice(); //returns random num from 1-6; In case of Three 6 return 0
@@ -24,8 +26,10 @@ public:
 	void DisplayMessage(); //Displays player Name and color;
 	void DisplayWinnerMessage(); //Displays the list of Winners Accordingly;
 	void DisplayKillMessage(); //Displays which piece is killed;
-	void SelectPiece(); //Select Piece
+	void SelectPiece();          //mapping abhi karni hai
 	void SelectDestination();//Select Destination
 	void GameOver();//Check for Game over condition;
+	bool KillHappen();
+
 };
 

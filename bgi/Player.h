@@ -3,18 +3,19 @@
 #include<string.h>
 #include"Piece.h"
 using namespace std;
-class Player:public Piece
+//class piece;
+class Player
 {
-	Position* P;
+	//Position* P;
 	string Name;
-	Color C;
+	//Color C;
 	int Team;
 public:
 	void SetName(string n);
-	void SetColor(Color c);
+	//void SetColor(Color c);
 	void SetTeamNum(int n);
 	string GetName();
-	Color GetColor();
+	//Color GetColor();
 	int GeteamNum();
 
 };
