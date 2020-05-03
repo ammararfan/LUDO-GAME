@@ -3,6 +3,6 @@ class Piece;
 class Board
 {
 	Piece*** B;
-	//hello.......
+	//hello....... aur kuch aya 
 };
 
