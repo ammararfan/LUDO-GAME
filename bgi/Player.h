@@ -10,9 +10,9 @@ class Player:public Piece
 	Color C;
 	int Team;
 public:
-	void SetName();
-	void SetColor();
-	void SetTeamNum();
+	void SetName(string n);
+	void SetColor(Color c);
+	void SetTeamNum(int n);
 	string GetName();
 	Color GetColor();
 	int GeteamNum();
