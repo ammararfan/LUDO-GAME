@@ -5,6 +5,7 @@ class Board
 {
 protected:
 	//boon.............
+	// testing new hadeed account
 	Piece* Ps;
 	int Nop;
 	Player* Ps;
