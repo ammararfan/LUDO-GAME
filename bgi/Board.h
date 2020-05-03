@@ -4,6 +4,7 @@ class Piece;
 class Board
 {
 protected:
+	//boon.............
 	Piece* Ps;
 	int Nop;
 	Player* Ps;
