@@ -1,14 +1,18 @@
 #pragma once
 #include<iostream>
+#include<cstdlib>
+#include<time.h>
 using namespace std;
 class Dice
 {
-	int Num;
+    int Num;
 public:
-	int GenerateNum()
-	{
-		return rand() % 6 + 1;
-	}
-	void DrawDice();
+    int GenerateNum()
+    {
+        srand(time(0));
+
+        return (rand() % 6) + 1;
+    }
+    void DrawDice(int Dn);
 };
 

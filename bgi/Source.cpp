@@ -1,5 +1,6 @@
 #include"Board.h"
 #include"graphics.h"
+#include"Dice.h"
 #include<iostream>
 using namespace std;
 

@@ -1,17 +1,22 @@
 #pragma once
 #include"Player.h"
+#include"Dice.h"
 #include"graphics.h"
 class Piece;
 class Board
 {
+	friend class Piece;
 protected:
 	Piece* B[15][9];
 	int Nop;
-	int Dice;
+	Dice D;
 	Position S,E;
 	Color Turn;
 public:
-	Board() {}
+	Board() {
+		init();
+	
+	}
 	void DisplayPieces();
 	void init(); //init the arrays , Turn, NOP ,Pieces etc
 	int RollDice(); //returns random num from 1-6; In case of Three 6 return 0
@@ -30,6 +35,6 @@ public:
 	void SelectDestination();//Select Destination
 	bool GameOver();//Check for Game over condition;
 	bool KillHappen();
-
+	void Move(Position s, Position e);
 };
 

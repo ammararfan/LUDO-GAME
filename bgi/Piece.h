@@ -14,9 +14,9 @@ class Piece
 	int count;         
 public:
 	Piece() {}
-	Piece(Color C,Position P);
+	Piece(Color C, Position P, Board* b);
 	virtual void Draw();
-	//virtual void UnDraw();
+	virtual void UnDraw();
 	void Move(Position E);
 	Color GetColor();
 };

@@ -144,6 +144,7 @@ void Board::DisplayPieces()
 }
 void Board::init()
 {
+
 	for (int i = 0; i < 15; i++)
 	{
 		for (int c = 0; c < 9; c++)
@@ -154,40 +155,40 @@ void Board::init()
 	Nop = 6;
 	Turn = green;
 
-	B[0][1] = new Piece(green, Position(0, 1));
-	B[1][0] = new Piece(green, Position(1, 0));
-	B[1][2] = new Piece(green, Position(1, 2));
-	B[2][1] = new Piece(green, Position(2, 1));
+	B[0][1] = new Piece(green, Position(0, 1),this);
+	B[1][0] = new Piece(green, Position(1, 0), this);
+	B[1][2] = new Piece(green, Position(1, 2), this);
+	B[2][1] = new Piece(green, Position(2, 1), this);
 
 
-	B[6][1] = new Piece(red, Position(6, 1));
-	B[7][0] = new Piece(red, Position(7, 0));
-	B[8][1] = new Piece(red, Position(8, 1));
-	B[7][2] = new Piece(red, Position(7, 2));
+	B[6][1] = new Piece(red, Position(6, 1), this);
+	B[7][0] = new Piece(red, Position(7, 0), this);
+	B[8][1] = new Piece(red, Position(8, 1), this);
+	B[7][2] = new Piece(red, Position(7, 2), this);
 	
 
-	B[6][7] = new Piece(blue, Position(6, 7));
-	B[7][6] = new Piece(blue, Position(7, 6));
-	B[7][8] = new Piece(blue, Position(7, 8));
-	B[8][7] = new Piece(blue, Position(8, 7));
+	B[6][7] = new Piece(blue, Position(6, 7), this);
+	B[7][6] = new Piece(blue, Position(7, 6), this);
+	B[7][8] = new Piece(blue, Position(7, 8), this);
+	B[8][7] = new Piece(blue, Position(8, 7), this);
 
 
-	B[0][7] = new Piece(yellow, Position(0, 7));
-	B[1][6] = new Piece(yellow, Position(1, 6));
-	B[2][7] = new Piece(yellow, Position(2, 7));
-	B[1][8] = new Piece(yellow, Position(1, 8));
+	B[0][7] = new Piece(yellow, Position(0, 7), this);
+	B[1][6] = new Piece(yellow, Position(1, 6), this);
+	B[2][7] = new Piece(yellow, Position(2, 7), this);
+	B[1][8] = new Piece(yellow, Position(1, 8), this);
 
 
-	B[6][13] = new Piece(purple, Position(6, 13));
-	B[7][12] = new Piece(purple, Position(7, 12));
-	B[8][13] = new Piece(purple, Position(8, 13));
-	B[7][14] = new Piece(purple, Position(7, 14));
+	B[6][13] = new Piece(purple, Position(6, 13), this);
+	B[7][12] = new Piece(purple, Position(7, 12), this);
+	B[8][13] = new Piece(purple, Position(8, 13), this);
+	B[7][14] = new Piece(purple, Position(7, 14), this);
 
 
-	B[0][13] = new Piece(Cyan, Position(0, 13));
-	B[1][12] = new Piece(Cyan, Position(1, 12));
-	B[2][13] = new Piece(Cyan, Position(2, 13));
-	B[1][14] = new Piece(Cyan, Position(1, 14));
+	B[0][13] = new Piece(Cyan, Position(0, 13), this);
+	B[1][12] = new Piece(Cyan, Position(1, 12), this);
+	B[2][13] = new Piece(Cyan, Position(2, 13), this);
+	B[1][14] = new Piece(Cyan, Position(1, 14), this);
 
 }
 int Board::RollDice()
@@ -196,14 +197,17 @@ int Board::RollDice()
 }
 bool Board::IsValidSelection()
 {
-	
-	return B[S.r][S.c]->GetColor() == Turn;
+
+	if (B[S.r][S.c] != nullptr)
+		return B[S.r][S.c]->GetColor() == Turn;
+	else
+		return false;
 
 
 }
 bool Board::IsValidDestination()
 {
-	return B[E.r][E.c]->GetColor() == White || B[E.r][E.c]->GetColor() != Turn;
+	return B[E.r][E.c] == nullptr || B[E.r][E.c]->GetColor() != Turn;
 }
 void Board::PrintBoard()
 {
@@ -213,14 +217,18 @@ void Board::Play()
 {
 	init();  
 	PrintBoard();
+	D.DrawDice(5);
 	DisplayPieces();
-
 	do
 	{
+		PrintBoard();
+		DisplayPieces();
 		DisplayMessage();
-		Dice = RollDice();
+		int Di=D.GenerateNum();
+		D.DrawDice(Di);
 	  do
 		{
+		  
 		do
 		   {
 			SelectPiece();
@@ -233,18 +241,14 @@ void Board::Play()
 			cout << "Invalid Destination";
 		}
 	  } while (!IsValidDestination());
-		//B[S.r][S.c]->Move(E);
-
+		B[S.r][S.c]->Move(E);
 		if (KillHappen())
 		 DisplayKillMessage(); 		
-
 		if (IsWin())
 		{
 
 		}
-
 	   TurnChange(); 
-
 	} while (!GameOver());
 	  DisplayWinnerMessage(); 
 }
@@ -278,7 +282,7 @@ void Board::DisplayKillMessage()
 }
 void Board::SelectPiece()
 {
-	while (!ismouseclick(WM_LBUTTONDOWN))              //mapping abhi karni hai
+	while (!ismouseclick(WM_LBUTTONDOWN))              
 	{
 		delay(500);
 	}
@@ -295,12 +299,13 @@ void Board::SelectDestination()
 	{
 		delay(500);
 	}
-	getmouseclick(WM_LBUTTONDOWN, S.c, S.r);
+		getmouseclick(WM_LBUTTONDOWN, E.c, E.r);
 
-	cout << S.r << " " << S.c << endl;
-	S.r = S.r / 50;
-	S.c = S.c / 50;
-	cout << S.r << " " << S.c;
+		cout << E.r << " " << E.c << endl;
+		E.r = E.r / 50;
+		E.c = E.c / 50;
+		cout << E.r << " " << E.c;
+	
 }
 bool Board ::KillHappen()
 {
@@ -309,5 +314,12 @@ bool Board ::KillHappen()
 
 bool  Board::GameOver()
 {
-	return true;
+	return false;
+}
+void Board::Move(Position s,Position e)
+{
+	B[e.r][e.c] = B[s.r][s.c];
+	B[e.r][e.c]->Draw();
+	B[s.r][s.c]->UnDraw();
+	B[s.r][s.c] = nullptr;
 }
