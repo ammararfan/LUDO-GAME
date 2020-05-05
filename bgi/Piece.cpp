@@ -5,6 +5,8 @@ Piece::Piece(Color C, Position P,Board *b)
 	Col = C;
 	p = P;
     B = b;
+    Iskill = false;
+    IsSafe = false;
 }
 Color Piece::GetColor()
 {
@@ -22,7 +24,6 @@ void Piece::UnDraw()
     setfillstyle(SOLID_FILL, WHITE);
     bar(x1, y1, x2, y2);
 }
-
 void Piece::Draw()
 {
    int rdim = 50, cdim = 50;
@@ -63,5 +64,15 @@ void Piece::Draw()
        pieslice(p.c * rdim + 25, p.r * rdim + 25, 0, 360, 15);
    }
        
+}
+bool Piece::IsLegal(int i, Position Ep)
+{
+   // int SriG = 3, SciG = 1;
+    int dr = Ep.r - p.r, dc = Ep.c - p.c;
+    if ((abs(dr) + abs(dc)) == i)
+    {
+        return true;
+    }
+    return false;
 }
 

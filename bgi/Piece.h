@@ -19,5 +19,6 @@ public:
 	virtual void UnDraw();
 	void Move(Position E);
 	Color GetColor();
+	bool IsLegal(int i,Position Ep);
 };
 

@@ -12,6 +12,7 @@ protected:
 	Dice D;
 	Position S,E;
 	Color Turn;
+	int turn=0;
 public:
 	Board() {
 		init();
@@ -36,5 +37,6 @@ public:
 	bool GameOver();//Check for Game over condition;
 	bool KillHappen();
 	void Move(Position s, Position e);
+	//bool IsLegal(Position Ep);
 };
 

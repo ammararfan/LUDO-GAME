@@ -226,21 +226,24 @@ void Board::Play()
 		DisplayMessage();
 		int Di=D.GenerateNum();
 		D.DrawDice(Di);
-	  do
+		do 
 		{
-		  
-		do
-		   {
-			SelectPiece();
-			if (IsValidSelection() != true)
-				cout << "Invalid destination";
-		} while (!IsValidSelection());
-		SelectDestination();
-		if (IsValidDestination() != true)
-		{
-			cout << "Invalid Destination";
-		}
-	  } while (!IsValidDestination());
+			do
+			{
+
+				do
+				{
+					SelectPiece();
+					if (IsValidSelection() != true)
+						cout << "Invalid Selection";
+				} while (!IsValidSelection());
+				SelectDestination();
+				if (IsValidDestination() != true)
+				{
+					cout << "Invalid Destination";
+				}
+			} while (!IsValidDestination());
+		} while (B[S.r][S.c]->IsLegal(Di, E));
 		B[S.r][S.c]->Move(E);
 		if (KillHappen())
 		 DisplayKillMessage(); 		
@@ -266,6 +269,32 @@ bool Board::IsWin()
 }
 void Board::TurnChange()
 {
+	if (Turn==green)
+	{
+		Turn = yellow;
+	}
+	else if(Turn==yellow)
+	{
+		Turn = Cyan;
+	}
+	else if (Turn == Cyan)
+	{
+		Turn = purple;
+	}
+	else if (Turn == purple)
+	{
+		Turn = blue;
+	}
+	else if (Turn == blue)
+	{
+		Turn = red;
+	}
+	else if (Turn == red)
+	{
+		Turn = green;
+	}
+	
+
 
 }
 void Board::DisplayMessage()
@@ -311,7 +340,6 @@ bool Board ::KillHappen()
 {
 	return false;
 }
-
 bool  Board::GameOver()
 {
 	return false;
@@ -323,3 +351,7 @@ void Board::Move(Position s,Position e)
 	B[s.r][s.c]->UnDraw();
 	B[s.r][s.c] = nullptr;
 }
+//bool Board::IsLegal(Position Ep)
+//{
+//
+//}
