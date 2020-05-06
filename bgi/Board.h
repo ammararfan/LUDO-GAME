@@ -10,19 +10,19 @@ protected:
 	Piece* B[15][9];
 	int Nop;
 	Dice D;
-	Position S,E;
+	Position S, E;
 	Color Turn;
-	int turn=0;
+	int turn = 0;
 public:
 	Board() {
 		init();
-	
+
 	}
 	void DisplayPieces();
 	void init(); //init the arrays , Turn, NOP ,Pieces etc
 	int RollDice(); //returns random num from 1-6; In case of Three 6 return 0
 	bool IsValidSelection(); //checks for valid piece selection
-	bool IsValidDestination(); //checks for valid destination
+	bool IsValidDestination(int Di); //checks for valid destination
 	void PrintBoard();   //Prints the Board
 	void Play();     //Main Flow in this function
 	void Move(); //Updates The Board (Pieces Array)

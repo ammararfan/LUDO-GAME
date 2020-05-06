@@ -10,9 +10,9 @@ public:
     int GenerateNum()
     {
         srand(time(0));
-        
-         Num=(rand() % 6) + 1;
-         return Num;
+
+        Num = (rand() % 6) + 1;
+        return Num;
     }
     void DrawDice(int Dn);
 

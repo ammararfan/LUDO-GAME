@@ -154,8 +154,125 @@ void Board::init()
 	}
 	Nop = 6;
 	Turn = green;
+	for (int y = 0; y < 15; y++)
+	{
+		for (int x = 0; x < 9; x++)
+		{
+			//	int x1 = x * s, y1 = y * s, x2 = (x + 1) * s - 0, y2 = (y + 1) * s - 0;
+				//if ((x + y) % 2 == 0)
+			if ((y >= 0 && y < 3) && (x >= 0 && x < 3))
+			{
+				/*setfillstyle(SOLID_FILL, GREEN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 1 && x == 3)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 3 && x == 7)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
 
-	B[0][1] = new Piece(green, Position(0, 1),this);
+			else if (y == 9 && x == 7)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 5 && x == 1)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 11 && x == 1)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 13 && x == 5)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+
+
+
+			else if ((y >= 0 && y < 3) && (x >= 6 && x <= 8))
+			{
+				/*setfillstyle(SOLID_FILL, RED);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if ((y >= 6 && y <= 8) && (x >= 6 && x <= 8))
+			{
+
+			}
+			else if ((y >= 6 && y <= 8) && (x >= 0 && x <= 2))
+			{
+			}
+			else if ((y >= 12 && y <= 14) && (x >= 6 && x <= 8))
+			{
+
+			}
+			else if ((y >= 12 && y <= 14) && (x >= 0 && x <= 2))
+			{
+
+			}
+			else if ((y > 0 && y < 14) && (x == 4))
+			{
+				/*setfillstyle(SOLID_FILL, DARKGRAY);
+				bar(y1, x1, y2, x2);
+				if (y == 1 || y == 2)
+				{
+					setfillstyle(SOLID_FILL, GREEN);
+					bar(y1, x1, y2, x2);
+				}
+				if (y == 12 || y == 13)
+				{
+					setfillstyle(SOLID_FILL, MAGENTA);
+					bar(y1, x1, y2, x2);
+				}*/
+			}
+			else if (y == 4 && (x > 0 && x < 8))
+			{
+				/*setfillstyle(SOLID_FILL, DARKGRAY);
+				bar(y1, x1, y2, x2);
+				if (x == 1 || x == 2)
+				{
+					setfillstyle(SOLID_FILL, YELLOW);
+					bar(y1, x1, y2, x2);
+				}
+				if (x == 6 || x == 7)
+				{
+					setfillstyle(SOLID_FILL, RED);
+					bar(y1, x1, y2, x2);
+				}*/
+			}
+			else if (y == 10 && (x > 0 && x < 8))
+			{
+				/*setfillstyle(SOLID_FILL, DARKGRAY);
+				bar(y1, x1, y2, x2);
+
+				if (x == 1 || x == 2)
+				{
+					setfillstyle(SOLID_FILL, CYAN);
+					bar(y1, x1, y2, x2);
+				}
+				if (x == 7 || x == 6)
+				{
+					setfillstyle(SOLID_FILL, BLUE);
+					bar(y1, x1, y2, x2);
+				}*/
+			}
+			else
+			{
+
+				B[y][x] = new Piece(White, Position(y, x), this);
+			}
+		}
+	}
+	B[0][1] = new Piece(green, Position(0, 1), this);
 	B[1][0] = new Piece(green, Position(1, 0), this);
 	B[1][2] = new Piece(green, Position(1, 2), this);
 	B[2][1] = new Piece(green, Position(2, 1), this);
@@ -165,7 +282,7 @@ void Board::init()
 	B[7][0] = new Piece(red, Position(7, 0), this);
 	B[8][1] = new Piece(red, Position(8, 1), this);
 	B[7][2] = new Piece(red, Position(7, 2), this);
-	
+
 
 	B[6][7] = new Piece(blue, Position(6, 7), this);
 	B[7][6] = new Piece(blue, Position(7, 6), this);
@@ -190,6 +307,8 @@ void Board::init()
 	B[2][13] = new Piece(Cyan, Position(2, 13), this);
 	B[1][14] = new Piece(Cyan, Position(1, 14), this);
 
+
+
 }
 int Board::RollDice()
 {
@@ -205,9 +324,45 @@ bool Board::IsValidSelection()
 
 
 }
-bool Board::IsValidDestination()
+bool Board::IsValidDestination(int DICE)
 {
-	return B[E.r][E.c] == nullptr || B[E.r][E.c]->GetColor() != Turn;
+	int a;
+	if (S.r > E.r && S.c < E.c)
+	{
+		a = (S.r - E.r) + (E.c - S.c);
+	}
+	if (S.r < E.r && S.c < E.c)
+	{
+		a = (E.r - S.r) + (E.c - S.c);
+	}
+	if (S.r < E.r && S.c > E.c)
+	{
+		a = (E.r - S.r) + (S.c - E.c);
+	}
+	if (S.r > E.r && S.c > E.c)
+	{
+		a = (S.r - E.r) + (S.c - E.c);
+	}
+	if (S.r < E.r && S.c == E.c)
+	{
+		a = E.r - S.r;
+	}
+	if (S.r > E.r && S.c == E.c)
+	{
+		a = S.r - E.r;
+	}
+	if (S.r == E.r && S.c < E.c)
+	{
+		a = E.c - S.c;
+
+	}
+	if (S.r == E.r && S.c > E.c)
+	{
+		a = S.c - E.c;
+
+	}
+	return((B[E.r][E.c] != nullptr && (B[E.r][E.c]->GetColor() == White || B[E.r][E.c]->GetColor() != Turn) && (a == DICE)));
+	//return B[E.r][E.c] == nullptr || B[E.r][E.c]->GetColor() != Turn;
 }
 void Board::PrintBoard()
 {
@@ -215,7 +370,7 @@ void Board::PrintBoard()
 }
 void Board::Play()
 {
-	init();  
+	init();
 	PrintBoard();
 	D.DrawDice(5);
 	DisplayPieces();
@@ -224,36 +379,40 @@ void Board::Play()
 		PrintBoard();
 		DisplayPieces();
 		DisplayMessage();
-		int Di=D.GenerateNum();
+	x:
+		int Di = D.GenerateNum();
 		D.DrawDice(Di);
-		do 
+		do
 		{
+
 			do
 			{
-
-				do
-				{
-					SelectPiece();
-					if (IsValidSelection() != true)
-						cout << "Invalid Selection";
-				} while (!IsValidSelection());
-				SelectDestination();
-				if (IsValidDestination() != true)
-				{
-					cout << "Invalid Destination";
-				}
-			} while (!IsValidDestination());
-		} while (B[S.r][S.c]->IsLegal(Di, E));
+				SelectPiece();
+				if (IsValidSelection() != true)
+					cout << "Invalid destination";
+			} while (!IsValidSelection());
+			SelectDestination();
+			if (IsValidDestination(Di) != true)
+			{
+				cout << "Invalid Destination";
+			}
+		} while (!IsValidDestination(Di));
 		B[S.r][S.c]->Move(E);
+		if (Di == 6)
+		{
+			PrintBoard();
+			DisplayPieces();
+			goto x;
+		}
 		if (KillHappen())
-		 DisplayKillMessage(); 		
+			DisplayKillMessage();
 		if (IsWin())
 		{
 
 		}
-	   TurnChange(); 
+		TurnChange();
 	} while (!GameOver());
-	  DisplayWinnerMessage(); 
+	DisplayWinnerMessage();
 }
 void Board::Move()
 {
@@ -269,11 +428,11 @@ bool Board::IsWin()
 }
 void Board::TurnChange()
 {
-	if (Turn==green)
+	if (Turn == green)
 	{
 		Turn = yellow;
 	}
-	else if(Turn==yellow)
+	else if (Turn == yellow)
 	{
 		Turn = Cyan;
 	}
@@ -293,13 +452,43 @@ void Board::TurnChange()
 	{
 		Turn = green;
 	}
-	
+
 
 
 }
 void Board::DisplayMessage()
 {
-
+	outtextxy(200, 540, "                                                                                     ");
+	if (Turn == green)
+	{
+		setcolor(GREEN);
+		outtextxy(200, 540, "Green");
+	}
+	if (Turn == yellow)
+	{
+		setcolor(YELLOW);
+		outtextxy(200, 540, "Yellow");
+	}
+	if (Turn == Cyan)
+	{
+		setcolor(CYAN);
+		outtextxy(200, 540, "Cyan");
+	}
+	if (Turn == purple)
+	{
+		setcolor(MAGENTA);
+		outtextxy(200, 540, "Purple");
+	}
+	if (Turn == blue)
+	{
+		setcolor(BLUE);
+		outtextxy(200, 540, "Blue");
+	}
+	if (Turn == red)
+	{
+		setcolor(RED);
+		outtextxy(200, 540, "Red");
+	}
 }
 void Board::DisplayWinnerMessage()
 {
@@ -307,11 +496,11 @@ void Board::DisplayWinnerMessage()
 }
 void Board::DisplayKillMessage()
 {
-
+	outtextxy(50, 50, "Life without Life is AfterLife......");
 }
 void Board::SelectPiece()
 {
-	while (!ismouseclick(WM_LBUTTONDOWN))              
+	while (!ismouseclick(WM_LBUTTONDOWN))
 	{
 		delay(500);
 	}
@@ -320,7 +509,7 @@ void Board::SelectPiece()
 	cout << S.r << " " << S.c << endl;
 	S.r = S.r / 50;
 	S.c = S.c / 50;
-	cout << S.r<< " " << S.c;
+	cout << S.r << " " << S.c;
 }
 void Board::SelectDestination()
 {
@@ -328,15 +517,15 @@ void Board::SelectDestination()
 	{
 		delay(500);
 	}
-		getmouseclick(WM_LBUTTONDOWN, E.c, E.r);
+	getmouseclick(WM_LBUTTONDOWN, E.c, E.r);
 
-		cout << E.r << " " << E.c << endl;
-		E.r = E.r / 50;
-		E.c = E.c / 50;
-		cout << E.r << " " << E.c;
-	
+	cout << E.r << " " << E.c << endl;
+	E.r = E.r / 50;
+	E.c = E.c / 50;
+	cout << E.r << " " << E.c;
+
 }
-bool Board ::KillHappen()
+bool Board::KillHappen()
 {
 	return false;
 }
@@ -344,11 +533,11 @@ bool  Board::GameOver()
 {
 	return false;
 }
-void Board::Move(Position s,Position e)
+void Board::Move(Position s, Position e)
 {
 	B[e.r][e.c] = B[s.r][s.c];
-	B[e.r][e.c]->Draw();
-	B[s.r][s.c]->UnDraw();
+	/*B[e.r][e.c]->Draw();
+	B[s.r][s.c]->UnDraw();*/
 	B[s.r][s.c] = nullptr;
 }
 //bool Board::IsLegal(Position Ep)

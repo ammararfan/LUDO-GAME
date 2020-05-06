@@ -1,21 +1,26 @@
 #include "Piece.h"
 #include"Board.h"
-Piece::Piece(Color C, Position P,Board *b)
+Piece::Piece(Color C, Position P, Board* b)
 {
-	Col = C;
-	p = P;
+    Col = C;
+    p = P;
     B = b;
     Iskill = false;
     IsSafe = false;
 }
 Color Piece::GetColor()
 {
-	return Col;
+    return Col;
 }
 void Piece::Move(Position Ep)
 {
     B->Move(p, Ep);
     p = Ep;
+}
+void Piece::setPositions(Position org, Position sp)
+{
+    SP = sp;
+    Org = org;
 }
 void Piece::UnDraw()
 {
@@ -26,48 +31,48 @@ void Piece::UnDraw()
 }
 void Piece::Draw()
 {
-   int rdim = 50, cdim = 50;
-   if (Col == green)
-   {
-       setcolor(GREEN);
-       setfillstyle(INTERLEAVE_FILL, GREEN);
-       pieslice(p.c * rdim + 25, p.r * rdim + 25, 0, 360, 15);
-   }
-   else if (Col == red)
-   {
-       setcolor(RED);
-       setfillstyle(INTERLEAVE_FILL, RED);
-       pieslice(p.c * rdim + 25, p.r * rdim + 25, 0, 360, 15);
-   }
-   else if (Col == yellow)
-   {
-       setcolor(YELLOW);
-       setfillstyle(INTERLEAVE_FILL, YELLOW);
-       pieslice(p.c * rdim + 25, p.r * rdim + 25, 0, 360, 15);
-   }
-   else if (Col == blue)
-   {
-       setcolor(BLUE);
-       setfillstyle(INTERLEAVE_FILL, BLUE);
-       pieslice(p.c * rdim + 25, p.r * rdim + 25, 0, 360, 15);
-   }
-   else if (Col == purple)
-   {
-       setcolor(MAGENTA);
-       setfillstyle(INTERLEAVE_FILL, MAGENTA);
-       pieslice(p.c * rdim + 25, p.r * rdim +25, 0, 360, 15);
-   }
-   else if (Col == Cyan)
-   {
-       setcolor(CYAN);
-       setfillstyle(INTERLEAVE_FILL, CYAN);
-       pieslice(p.c * rdim + 25, p.r * rdim + 25, 0, 360, 15);
-   }
-       
+    int rdim = 50, cdim = 50;
+    if (Col == green)
+    {
+        setcolor(GREEN);
+        setfillstyle(INTERLEAVE_FILL, GREEN);
+        pieslice(p.c * rdim + 25, p.r * rdim + 25, 0, 360, 15);
+    }
+    else if (Col == red)
+    {
+        setcolor(RED);
+        setfillstyle(INTERLEAVE_FILL, RED);
+        pieslice(p.c * rdim + 25, p.r * rdim + 25, 0, 360, 15);
+    }
+    else if (Col == yellow)
+    {
+        setcolor(YELLOW);
+        setfillstyle(INTERLEAVE_FILL, YELLOW);
+        pieslice(p.c * rdim + 25, p.r * rdim + 25, 0, 360, 15);
+    }
+    else if (Col == blue)
+    {
+        setcolor(BLUE);
+        setfillstyle(INTERLEAVE_FILL, BLUE);
+        pieslice(p.c * rdim + 25, p.r * rdim + 25, 0, 360, 15);
+    }
+    else if (Col == purple)
+    {
+        setcolor(MAGENTA);
+        setfillstyle(INTERLEAVE_FILL, MAGENTA);
+        pieslice(p.c * rdim + 25, p.r * rdim + 25, 0, 360, 15);
+    }
+    else if (Col == Cyan)
+    {
+        setcolor(CYAN);
+        setfillstyle(INTERLEAVE_FILL, CYAN);
+        pieslice(p.c * rdim + 25, p.r * rdim + 25, 0, 360, 15);
+    }
+
 }
 bool Piece::IsLegal(int i, Position Ep)
 {
-   // int SriG = 3, SciG = 1;
+    int SriG = 3, SciG = 1;
     int dr = Ep.r - p.r, dc = Ep.c - p.c;
     if ((abs(dr) + abs(dc)) == i)
     {
@@ -75,4 +80,5 @@ bool Piece::IsLegal(int i, Position Ep)
     }
     return false;
 }
+
 
