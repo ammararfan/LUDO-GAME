@@ -2,22 +2,23 @@
 #include"Player.h"
 #include"graphics.h"
 #include"Position.h"
-enum Color { red = 0, blue = 1, yellow = 2, green = 3, Cyan = 4, purple = 5, White = -1 };
+enum Color { red = 0, blue = 1, yellow = 2, green = 3, Cyan = 4, purple = 5, White = -1,brown=-2 };
 class Board;
 class Piece
 {
 	Position p;   //Composition
 	Position Org;
-	Position SP;
 	Color Col;
 	Board* B;
-	bool Iskill;        // Is on Board or At Home
+	bool IsOut;        // Is on Board or At Home
 	bool IsSafe;     // Is on stop or not
 	int count;
+	friend class Board;
 public:
+	Position SP;
 	Piece() {}
 	Piece(Color C, Position P, Board* b);
-	void setPositions(Position org, Position sp);
+	void setPositions();
 	virtual void Draw();
 	virtual void UnDraw();
 	void Move(Position E);

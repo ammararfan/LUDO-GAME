@@ -8,4 +8,9 @@ struct Position
 	{
 
 	}
+	void setPositions(int r1, int c1)
+	{
+		r = r1;
+		c = c1;
+	}
 };

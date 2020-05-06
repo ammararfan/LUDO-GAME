@@ -153,6 +153,8 @@ void Board::init()
 		}
 	}
 	Nop = 6;
+	//player  = new Player[Nop];
+	
 	Turn = green;
 	for (int y = 0; y < 15; y++)
 	{
@@ -272,22 +274,27 @@ void Board::init()
 			}
 		}
 	}
+
 	B[0][1] = new Piece(green, Position(0, 1), this);
 	B[1][0] = new Piece(green, Position(1, 0), this);
 	B[1][2] = new Piece(green, Position(1, 2), this);
 	B[2][1] = new Piece(green, Position(2, 1), this);
+
+	Player P1(B[0][1], B[1][0], B[1][2], B[2][1]);
 
 
 	B[6][1] = new Piece(red, Position(6, 1), this);
 	B[7][0] = new Piece(red, Position(7, 0), this);
 	B[8][1] = new Piece(red, Position(8, 1), this);
 	B[7][2] = new Piece(red, Position(7, 2), this);
+	Player P2(B[6][1], B[7][0], B[8][1], B[7][2]);
 
 
 	B[6][7] = new Piece(blue, Position(6, 7), this);
 	B[7][6] = new Piece(blue, Position(7, 6), this);
 	B[7][8] = new Piece(blue, Position(7, 8), this);
 	B[8][7] = new Piece(blue, Position(8, 7), this);
+	Player P3(B[6][7], B[7][6], B[7][8], B[8][7]);
 
 
 	B[0][7] = new Piece(yellow, Position(0, 7), this);
@@ -295,11 +302,13 @@ void Board::init()
 	B[2][7] = new Piece(yellow, Position(2, 7), this);
 	B[1][8] = new Piece(yellow, Position(1, 8), this);
 
+	Player P4(B[0][7], B[1][6], B[2][7], B[1][8]);
 
 	B[6][13] = new Piece(purple, Position(6, 13), this);
 	B[7][12] = new Piece(purple, Position(7, 12), this);
 	B[8][13] = new Piece(purple, Position(8, 13), this);
 	B[7][14] = new Piece(purple, Position(7, 14), this);
+	Player P5(B[6][13], B[7][12], B[8][13], B[7][14]);
 
 
 	B[0][13] = new Piece(Cyan, Position(0, 13), this);
@@ -307,7 +316,13 @@ void Board::init()
 	B[2][13] = new Piece(Cyan, Position(2, 13), this);
 	B[1][14] = new Piece(Cyan, Position(1, 14), this);
 
-
+	Player P6(B[0][13], B[1][12], B[2][13], B[1][14]);
+	/*B[3][1] = new Piece(brown, Position(3, 1), this);
+	B[3][1] = new Piece(brown, Position(3, 1), this);
+	B[3][1] = new Piece(brown, Position(3, 1), this);
+	B[3][1] = new Piece(brown, Position(3, 1), this);
+	B[3][1] = new Piece(brown, Position(3, 1), this);
+	B[3][1] = new Piece(brown, Position(3, 1), this);*/
 
 }
 int Board::RollDice()
@@ -368,6 +383,13 @@ void Board::PrintBoard()
 {
 	Board6Player();
 }
+void Board::MoveToSafe()
+{
+	if (Turn == green)
+	{
+
+	}
+}
 void Board::Play()
 {
 	init();
@@ -380,7 +402,9 @@ void Board::Play()
 		DisplayPieces();
 		DisplayMessage();
 	x:
-		int Di = D.GenerateNum();
+		int Di= D.GenerateNum();
+		Di = 6;
+
 		D.DrawDice(Di);
 		do
 		{
@@ -388,9 +412,26 @@ void Board::Play()
 			do
 			{
 				SelectPiece();
-				if (IsValidSelection() != true)
+				if (Di == 6 && B[S.r][S.c]->IsOut == false)
+				{
+					B[S.r][S.c]->IsOut = true;
+					B[S.r][S.c]->Move(B[S.r][S.c]->SP);
+					PrintBoard();
+					DisplayPieces();
+					goto x;
+				}
+				if (IsValidSelection() != true)             //iskill false && kai
+				{
+					B[S.r][S.c]->IsOut = true;
+					B[S.r][S.c]->Move(B[S.r][S.c]->SP);
+					PrintBoard();
+					DisplayPieces();
+					goto x;
+				}
+				if (IsValidSelection() != true)             //iskill false && kai saath
 					cout << "Invalid destination";
 			} while (!IsValidSelection());
+			
 			SelectDestination();
 			if (IsValidDestination(Di) != true)
 			{
@@ -493,6 +534,13 @@ void Board::DisplayMessage()
 void Board::DisplayWinnerMessage()
 {
 
+}
+bool Board::IsLocoSafe(Position Lame)
+{
+	if ((Lame.r == 1 && Lame.c == 3) || (Lame.r == 5 && Lame.c == 1) || (Lame.r == 11 && Lame.c == 1)
+		||(Lame.r == 13 && Lame.c == 5) || (Lame.r == 9 && Lame.c == 7) || (Lame.r == 3 && Lame.c == 7))
+		return true;
+	else return false;
 }
 void Board::DisplayKillMessage()
 {

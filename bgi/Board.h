@@ -11,6 +11,7 @@ protected:
 	int Nop;
 	Dice D;
 	Position S, E;
+	Player* player;
 	Color Turn;
 	int turn = 0;
 public:
@@ -18,6 +19,8 @@ public:
 		init();
 
 	}
+	bool IsLocoSafe(Position Lame);
+	void MoveToSafe();
 	void DisplayPieces();
 	void init(); //init the arrays , Turn, NOP ,Pieces etc
 	int RollDice(); //returns random num from 1-6; In case of Three 6 return 0

@@ -5,8 +5,10 @@ Piece::Piece(Color C, Position P, Board* b)
     Col = C;
     p = P;
     B = b;
-    Iskill = false;
+    Org = P;
+    IsOut = false;
     IsSafe = false;
+    setPositions();
 }
 Color Piece::GetColor()
 {
@@ -17,11 +19,22 @@ void Piece::Move(Position Ep)
     B->Move(p, Ep);
     p = Ep;
 }
-void Piece::setPositions(Position org, Position sp)
+void Piece::setPositions()
 {
-    SP = sp;
-    Org = org;
+    if (Col == green)
+        SP.setPositions(3, 1);
+    else if (Col == yellow)
+        SP.setPositions(1, 5);
+    else if (Col == Cyan)
+        SP.setPositions(1, 11);
+    else if (Col == purple)
+        SP.setPositions(5, 13);
+    else if (Col == blue)
+        SP.setPositions(7, 9);
+    else if (Col == red)
+        SP.setPositions(7, 3);
 }
+
 void Piece::UnDraw()
 {
     int s = 50;
