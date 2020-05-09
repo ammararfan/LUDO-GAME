@@ -4,7 +4,7 @@ Piece::Piece(Color C, Position P, Board* b)
 {
     Col = C;
     p = P;
-    B = b;
+    B = b;          
     Org = P;
     IsOut = false;
     IsSafe = false;

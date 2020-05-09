@@ -2,7 +2,7 @@
 #include"Player.h"
 #include"graphics.h"
 #include"Position.h"
-enum Color { red = 0, blue = 1, yellow = 2, green = 3, Cyan = 4, purple = 5, White = -1,brown=-2 };
+enum Color { green = 0, yellow = 1, Cyan = 2, purple = 3, blue = 4, red = 5, White = -1,brown=-2 };
 class Board;
 class Piece
 {

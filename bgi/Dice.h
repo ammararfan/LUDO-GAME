@@ -2,6 +2,7 @@
 #include<iostream>
 #include<cstdlib>
 #include<time.h>
+#include"graphics.h"
 using namespace std;
 class Dice
 {
@@ -9,6 +10,10 @@ class Dice
 public:
     int GenerateNum()
     {
+      /*  while (!ismouseclick(WM_LBUTTONDOWN))
+        {
+            delay(500);
+        }*/
         srand(time(0));
 
         Num = (rand() % 6) + 1;

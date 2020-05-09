@@ -45,9 +45,6 @@ void Board6Player()
 				setfillstyle(SOLID_FILL, BROWN);
 				bar(y1, x1, y2, x2);
 			}
-
-
-
 			else if ((y >= 0 && y < 3) && (x >= 6 && x <= 8))
 			{
 				setfillstyle(SOLID_FILL, RED);
@@ -77,12 +74,12 @@ void Board6Player()
 			{
 				setfillstyle(SOLID_FILL, DARKGRAY);
 				bar(y1, x1, y2, x2);
-				if (y == 1 || y == 2)
+				if (y == 1 || y == 2 || y==3)
 				{
 					setfillstyle(SOLID_FILL, GREEN);
 					bar(y1, x1, y2, x2);
 				}
-				if (y == 12 || y == 13)
+				if (y == 12 || y == 13 || y==11)
 				{
 					setfillstyle(SOLID_FILL, MAGENTA);
 					bar(y1, x1, y2, x2);
@@ -92,12 +89,12 @@ void Board6Player()
 			{
 				setfillstyle(SOLID_FILL, DARKGRAY);
 				bar(y1, x1, y2, x2);
-				if (x == 1 || x == 2)
+				if (x == 1 || x == 2 || x==3)
 				{
 					setfillstyle(SOLID_FILL, YELLOW);
 					bar(y1, x1, y2, x2);
 				}
-				if (x == 6 || x == 7)
+				if (x == 6 || x == 7 || x==5)
 				{
 					setfillstyle(SOLID_FILL, RED);
 					bar(y1, x1, y2, x2);
@@ -108,12 +105,12 @@ void Board6Player()
 				setfillstyle(SOLID_FILL, DARKGRAY);
 				bar(y1, x1, y2, x2);
 
-				if (x == 1 || x == 2)
+				if (x == 1 || x == 2 || x==3)
 				{
 					setfillstyle(SOLID_FILL, CYAN);
 					bar(y1, x1, y2, x2);
 				}
-				if (x == 7 || x == 6)
+				if (x == 7 || x == 6 || x==5)
 				{
 					setfillstyle(SOLID_FILL, BLUE);
 					bar(y1, x1, y2, x2);
@@ -153,7 +150,7 @@ void Board::init()
 		}
 	}
 	Nop = 6;
-	//player  = new Player[Nop];
+	player = new Player[Nop];
 	
 	Turn = green;
 	for (int y = 0; y < 15; y++)
@@ -287,14 +284,14 @@ void Board::init()
 	B[7][0] = new Piece(red, Position(7, 0), this);
 	B[8][1] = new Piece(red, Position(8, 1), this);
 	B[7][2] = new Piece(red, Position(7, 2), this);
-	Player P2(B[6][1], B[7][0], B[8][1], B[7][2]);
+	Player P6(B[6][1], B[7][0], B[8][1], B[7][2]);
 
 
 	B[6][7] = new Piece(blue, Position(6, 7), this);
 	B[7][6] = new Piece(blue, Position(7, 6), this);
 	B[7][8] = new Piece(blue, Position(7, 8), this);
 	B[8][7] = new Piece(blue, Position(8, 7), this);
-	Player P3(B[6][7], B[7][6], B[7][8], B[8][7]);
+	Player P5(B[6][7], B[7][6], B[7][8], B[8][7]);
 
 
 	B[0][7] = new Piece(yellow, Position(0, 7), this);
@@ -302,13 +299,13 @@ void Board::init()
 	B[2][7] = new Piece(yellow, Position(2, 7), this);
 	B[1][8] = new Piece(yellow, Position(1, 8), this);
 
-	Player P4(B[0][7], B[1][6], B[2][7], B[1][8]);
+	Player P2(B[0][7], B[1][6], B[2][7], B[1][8]);
 
 	B[6][13] = new Piece(purple, Position(6, 13), this);
 	B[7][12] = new Piece(purple, Position(7, 12), this);
 	B[8][13] = new Piece(purple, Position(8, 13), this);
 	B[7][14] = new Piece(purple, Position(7, 14), this);
-	Player P5(B[6][13], B[7][12], B[8][13], B[7][14]);
+	Player P4(B[6][13], B[7][12], B[8][13], B[7][14]);
 
 
 	B[0][13] = new Piece(Cyan, Position(0, 13), this);
@@ -316,7 +313,15 @@ void Board::init()
 	B[2][13] = new Piece(Cyan, Position(2, 13), this);
 	B[1][14] = new Piece(Cyan, Position(1, 14), this);
 
-	Player P6(B[0][13], B[1][12], B[2][13], B[1][14]);
+	Player P3(B[0][13], B[1][12], B[2][13], B[1][14]);
+
+	player[0] = P1;
+	player[1] = P2;
+	player[2] = P3;
+	player[3] = P4;
+	player[4] = P5;
+	player[5] = P6;
+
 	/*B[3][1] = new Piece(brown, Position(3, 1), this);
 	B[3][1] = new Piece(brown, Position(3, 1), this);
 	B[3][1] = new Piece(brown, Position(3, 1), this);
@@ -341,42 +346,57 @@ bool Board::IsValidSelection()
 }
 bool Board::IsValidDestination(int DICE)
 {
-	int a;
-	if (S.r > E.r && S.c < E.c)
-	{
-		a = (S.r - E.r) + (E.c - S.c);
-	}
-	if (S.r < E.r && S.c < E.c)
-	{
-		a = (E.r - S.r) + (E.c - S.c);
-	}
-	if (S.r < E.r && S.c > E.c)
-	{
-		a = (E.r - S.r) + (S.c - E.c);
-	}
-	if (S.r > E.r && S.c > E.c)
-	{
-		a = (S.r - E.r) + (S.c - E.c);
-	}
-	if (S.r < E.r && S.c == E.c)
-	{
-		a = E.r - S.r;
-	}
-	if (S.r > E.r && S.c == E.c)
-	{
-		a = S.r - E.r;
-	}
-	if (S.r == E.r && S.c < E.c)
-	{
-		a = E.c - S.c;
 
-	}
-	if (S.r == E.r && S.c > E.c)
-	{
-		a = S.c - E.c;
 
-	}
-	return((B[E.r][E.c] != nullptr && (B[E.r][E.c]->GetColor() == White || B[E.r][E.c]->GetColor() != Turn) && (a == DICE)));
+
+
+
+
+	return true;
+
+
+
+
+	//int a;
+	//if (S.r > E.r && S.c < E.c)
+	//{
+	//	a = (S.r - E.r) + (E.c - S.c);
+	//}
+	//if (S.r < E.r && S.c < E.c)
+	//{
+	//	a = (E.r - S.r) + (E.c - S.c);
+	//}
+	//if (E.r-S.r==E.c-S.c)   //ahmad ka code
+	//{
+	//	a = E.r - S.r + E.c - S.c;
+	//}
+	//if (S.r < E.r && S.c > E.c)
+	//{
+	//	a = (E.r - S.r) + (S.c - E.c);
+	//}
+	//if (S.r > E.r && S.c > E.c)
+	//{
+	//	a = (S.r - E.r) + (S.c - E.c);
+	//}
+	//if (S.r < E.r && S.c == E.c)
+	//{
+	//	a = E.r - S.r;
+	//}
+	//if (S.r > E.r && S.c == E.c)
+	//{
+	//	a = S.r - E.r;
+	//}
+	//if (S.r == E.r && S.c < E.c)
+	//{
+	//	a = E.c - S.c;
+
+	//}
+	//if (S.r == E.r && S.c > E.c)
+	//{
+	//	a = S.c - E.c;
+
+	//}
+	//return((B[E.r][E.c] != nullptr && (B[E.r][E.c]->GetColor() == White || B[E.r][E.c]->GetColor() != Turn) && (a == DICE)));
 	//return B[E.r][E.c] == nullptr || B[E.r][E.c]->GetColor() != Turn;
 }
 void Board::PrintBoard()
@@ -394,7 +414,7 @@ void Board::Play()
 {
 	init();
 	PrintBoard();
-	D.DrawDice(5);
+	D.DrawDice(0);
 	DisplayPieces();
 	do
 	{
@@ -403,50 +423,60 @@ void Board::Play()
 		DisplayMessage();
 	x:
 		int Di= D.GenerateNum();
-		Di = 6;
-
+		//Di = 6;
+		D.DrawDice(1);delay(100); D.DrawDice(4); delay(100); D.DrawDice(3); delay(100); D.DrawDice(1); delay(100); D.DrawDice(5);
 		D.DrawDice(Di);
+		if (IsAtHome() == true && Di!=6)
+		{
+			delay(500);
+			TurnChange();
+			DisplayMessage();
+			goto x;
+		}
 		do
 		{
-
 			do
 			{
 				SelectPiece();
-				if (Di == 6 && B[S.r][S.c]->IsOut == false)
+				if (IsValidSelection() != true)            
+					cout << "Invalid destination";
+				/*if (B[S.r][S.c]->IsOut == true)
 				{
-					B[S.r][S.c]->IsOut = true;
-					B[S.r][S.c]->Move(B[S.r][S.c]->SP);
-					PrintBoard();
-					DisplayPieces();
-					goto x;
-				}
+
+				}*/
 				if (IsValidSelection() != true)             //iskill false && kai
 				{
-					B[S.r][S.c]->IsOut = true;
-					B[S.r][S.c]->Move(B[S.r][S.c]->SP);
-					PrintBoard();
-					DisplayPieces();
-					goto x;
+					if (B[S.r][S.c]->IsOut == true)
+					{
+						B[S.r][S.c]->Move(B[S.r][S.c]->SP);
+						PrintBoard();
+						DisplayPieces();
+					}
 				}
-				if (IsValidSelection() != true)             //iskill false && kai saath
-					cout << "Invalid destination";
 			} while (!IsValidSelection());
-			
+			if (Di == 6 && B[S.r][S.c]->IsOut == false)
+			{
+				B[S.r][S.c]->IsOut = true;
+				B[S.r][S.c]->Move(B[S.r][S.c]->SP);
+				PrintBoard();
+				DisplayPieces();
+				goto x;
+			}
 			SelectDestination();
 			if (IsValidDestination(Di) != true)
 			{
 				cout << "Invalid Destination";
 			}
 		} while (!IsValidDestination(Di));
+		KillHappen();
 		B[S.r][S.c]->Move(E);
+		//KillHappen();
 		if (Di == 6)
 		{
 			PrintBoard();
 			DisplayPieces();
 			goto x;
 		}
-		if (KillHappen())
-			DisplayKillMessage();
 		if (IsWin())
 		{
 
@@ -454,6 +484,16 @@ void Board::Play()
 		TurnChange();
 	} while (!GameOver());
 	DisplayWinnerMessage();
+}
+bool Board::IsAtHome()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if(player[Turn].Goti[i]->IsOut == true)
+		return false;
+	}
+	return true;
+	//player[0]
 }
 void Board::Move()
 {
@@ -573,9 +613,22 @@ void Board::SelectDestination()
 	cout << E.r << " " << E.c;
 
 }
-bool Board::KillHappen()
+void Board::KillHappen()
 {
-	return false;
+	if (B[E.r][E.c] != nullptr && B[E.r][E.c]->GetColor() != Turn && B[E.r][E.c]->GetColor() != White)
+	{
+	//	B[E.r][E.c] = nullptr;
+		//B[B[E.r][E.c]->Org.r][B[E.r][E.c]->Org.c]=B[E.r][E.c];
+		//B[E.r][E.c]->p = B[E.r][E.c]->Org;
+		B[E.r][E.c]->IsOut = false;
+		 B[E.r][E.c]->Move(B[E.r][E.c]->Org) ;
+
+		//B[E.r][E.c]->Draw();
+
+
+	}
+		
+
 }
 bool  Board::GameOver()
 {

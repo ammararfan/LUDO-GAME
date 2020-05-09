@@ -8,6 +8,7 @@ class Player
 	Piece** Goti;
 	//Position P;
 	//string Name;
+	friend class Board;
 public:
 	//void SetName(string n);
 	Player() {}

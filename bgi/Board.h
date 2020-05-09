@@ -20,6 +20,7 @@ public:
 
 	}
 	bool IsLocoSafe(Position Lame);
+	bool IsAtHome();
 	void MoveToSafe();
 	void DisplayPieces();
 	void init(); //init the arrays , Turn, NOP ,Pieces etc
@@ -38,7 +39,7 @@ public:
 	void SelectPiece();          //mapping abhi karni hai
 	void SelectDestination();//Select Destination
 	bool GameOver();//Check for Game over condition;
-	bool KillHappen();
+	void KillHappen();
 	void Move(Position s, Position e);
 	//bool IsLegal(Position Ep);
 };
