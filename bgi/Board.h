@@ -7,7 +7,7 @@ class Board
 {
 	friend class Piece;
 protected:
-	Piece* B[15][9];
+	Piece* B[9][15];
 	int Nop;
 	Dice D;
 	Position S, E;
@@ -16,7 +16,7 @@ protected:
 	int turn = 0;
 public:
 	Board() {
-		init();
+		Init6();
 
 	}
 	bool IsLocoSafe(Position Lame);
@@ -24,6 +24,9 @@ public:
 	void MoveToSafe();
 	void DisplayPieces();
 	void init(); //init the arrays , Turn, NOP ,Pieces etc
+	void Init6();
+	void Init4();
+	void Init2();
 	int RollDice(); //returns random num from 1-6; In case of Three 6 return 0
 	bool IsValidSelection(); //checks for valid piece selection
 	bool IsValidDestination(int Di); //checks for valid destination

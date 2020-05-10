@@ -10,8 +10,13 @@ class Player
 	//string Name;
 	friend class Board;
 public:
+	bool isWin;
+	int count;
 	//void SetName(string n);
-	Player() {}
+	Player() {
+		count = 4;
+		isWin = false;
+	}
 	Player(Piece *p1, Piece* p2, Piece* p3, Piece *p4)
 	{
 		Goti = new Piece * [4];

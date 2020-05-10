@@ -12,7 +12,6 @@ class Piece
 	Board* B;
 	bool IsOut;        // Is on Board or At Home
 	bool IsSafe;     // Is on stop or not
-	int count;
 	friend class Board;
 public:
 	Position SP;

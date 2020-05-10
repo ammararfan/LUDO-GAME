@@ -125,12 +125,28 @@ void Board6Player()
 			rectangle(y1, x1, y2, x2);
 		}
 	}
+	setfillstyle(INTERLEAVE_FILL, LIGHTRED);
+	bar(4 * 50, 4 * 50, 4 * 50 + 50, 4 * 50 + 50);
+
+	setfillstyle(INTERLEAVE_FILL, LIGHTGREEN);
+	bar(10 * 50, 4* 50, 10 * 50 + 50, 4 * 50 + 50);
+	setcolor(BLACK);
+	rectangle(4 * 50, 4 * 50, 4 * 50 + 50, 4 * 50 + 50);
+	rectangle(10 * 50, 4 * 50, 10 * 50 + 50, 4 * 50 + 50);
+
+	for (int i = 5; i < 10; i++)
+	{
+		setfillstyle(SOLID_FILL, BLACK);
+		bar(i* 50, 4 * 50, i * 50 + 50, 4 * 50 + 50);
+		setcolor(BLACK);
+		rectangle(i * 50, 4 * 50, i* 50 + 50, 4 * 50 + 50);
+	}
 }
 void Board::DisplayPieces()
 {
-	for (int i = 0; i < 15; i++)
+	for (int i = 0; i < 9; i++)
 	{
-		for (int c = 0; c < 9; c++)
+		for (int c = 0; c < 15; c++)
 		{
 			if (B[i][c] != nullptr)
 			{
@@ -139,12 +155,329 @@ void Board::DisplayPieces()
 		}
 	}
 }
-void Board::init()
+void Board::Init2()
+{
+	for (int i = 0; i < 9; i++)
+	{
+		for (int c = 0; c < 15; c++)
+		{
+			B[i][c] = nullptr;
+		}
+	}
+	Nop = 2;
+	player = new Player[Nop];
+
+	Turn = green;
+	for (int y = 0; y < 9; y++)
+	{
+		for (int x = 0; x < 15; x++)
+		{
+			//	int x1 = x * s, y1 = y * s, x2 = (x + 1) * s - 0, y2 = (y + 1) * s - 0;
+				//if ((x + y) % 2 == 0)
+			if ((y >= 0 && y < 3) && (x >= 0 && x < 3))
+			{
+				/*setfillstyle(SOLID_FILL, GREEN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 1 && x == 3)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 3 && x == 7)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+
+			else if (y == 9 && x == 7)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 5 && x == 1)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 11 && x == 1)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 13 && x == 5)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+
+
+
+			else if ((y >= 0 && y < 3) && (x >= 6 && x <= 8))
+			{
+				/*setfillstyle(SOLID_FILL, RED);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if ((y >= 6 && y <= 8) && (x >= 6 && x <= 8))
+			{
+
+			}
+			else if ((y >= 6 && y <= 8) && (x >= 0 && x <= 2))
+			{
+			}
+			else if ((y >= 12 && y <= 14) && (x >= 6 && x <= 8))
+			{
+
+			}
+			else if ((y >= 12 && y <= 14) && (x >= 0 && x <= 2))
+			{
+
+			}
+			else if ((y > 0 && y < 14) && (x == 4))
+			{
+				/*setfillstyle(SOLID_FILL, DARKGRAY);
+				bar(y1, x1, y2, x2);
+				if (y == 1 || y == 2)
+				{
+					setfillstyle(SOLID_FILL, GREEN);
+					bar(y1, x1, y2, x2);
+				}
+				if (y == 12 || y == 13)
+				{
+					setfillstyle(SOLID_FILL, MAGENTA);
+					bar(y1, x1, y2, x2);
+				}*/
+			}
+			else if (y == 4 && (x > 0 && x < 8))
+			{
+				/*setfillstyle(SOLID_FILL, DARKGRAY);
+				bar(y1, x1, y2, x2);
+				if (x == 1 || x == 2)
+				{
+					setfillstyle(SOLID_FILL, YELLOW);
+					bar(y1, x1, y2, x2);
+				}
+				if (x == 6 || x == 7)
+				{
+					setfillstyle(SOLID_FILL, RED);
+					bar(y1, x1, y2, x2);
+				}*/
+			}
+			else if (y == 10 && (x > 0 && x < 8))
+			{
+				/*setfillstyle(SOLID_FILL, DARKGRAY);
+				bar(y1, x1, y2, x2);
+
+				if (x == 1 || x == 2)
+				{
+					setfillstyle(SOLID_FILL, CYAN);
+					bar(y1, x1, y2, x2);
+				}
+				if (x == 7 || x == 6)
+				{
+					setfillstyle(SOLID_FILL, BLUE);
+					bar(y1, x1, y2, x2);
+				}*/
+			}
+			else
+			{
+
+				B[y][x] = new Piece(White, Position(y, x), this);
+			}
+		}
+	}
+
+	B[0][1] = new Piece(green, Position(0, 1), this);
+	B[1][0] = new Piece(green, Position(1, 0), this);
+	B[1][2] = new Piece(green, Position(1, 2), this);
+	B[2][1] = new Piece(green, Position(2, 1), this);
+
+	Player P1(B[0][1], B[1][0], B[1][2], B[2][1]);
+
+
+	B[6][13] = new Piece(purple, Position(6, 13), this);
+	B[7][12] = new Piece(purple, Position(7, 12), this);
+	B[8][13] = new Piece(purple, Position(8, 13), this);
+	B[7][14] = new Piece(purple, Position(7, 14), this);
+	Player P4(B[6][13], B[7][12], B[8][13], B[7][14]);
+
+
+	player[0] = P1;
+	player[1] = P4;
+}
+void Board::Init4()
+{
+	for (int i = 0; i < 9; i++)
+	{
+		for (int c = 0; c < 15; c++)
+		{
+			B[i][c] = nullptr;
+		}
+	}
+	Nop = 4;
+	player = new Player[Nop];
+
+	Turn = green;
+	for (int y = 0; y < 9; y++)
+	{
+		for (int x = 0; x < 15; x++)
+		{
+			//	int x1 = x * s, y1 = y * s, x2 = (x + 1) * s - 0, y2 = (y + 1) * s - 0;
+				//if ((x + y) % 2 == 0)
+			if ((y >= 0 && y < 3) && (x >= 0 && x < 3))
+			{
+				/*setfillstyle(SOLID_FILL, GREEN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 1 && x == 3)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 3 && x == 7)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+
+			else if (y == 9 && x == 7)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 5 && x == 1)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 11 && x == 1)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 13 && x == 5)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+
+
+
+			else if ((y >= 0 && y < 3) && (x >= 6 && x <= 8))
+			{
+				/*setfillstyle(SOLID_FILL, RED);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if ((y >= 6 && y <= 8) && (x >= 6 && x <= 8))
+			{
+
+			}
+			else if ((y >= 6 && y <= 8) && (x >= 0 && x <= 2))
+			{
+			}
+			else if ((y >= 12 && y <= 14) && (x >= 6 && x <= 8))
+			{
+
+			}
+			else if ((y >= 12 && y <= 14) && (x >= 0 && x <= 2))
+			{
+
+			}
+			else if ((y > 0 && y < 14) && (x == 4))
+			{
+				/*setfillstyle(SOLID_FILL, DARKGRAY);
+				bar(y1, x1, y2, x2);
+				if (y == 1 || y == 2)
+				{
+					setfillstyle(SOLID_FILL, GREEN);
+					bar(y1, x1, y2, x2);
+				}
+				if (y == 12 || y == 13)
+				{
+					setfillstyle(SOLID_FILL, MAGENTA);
+					bar(y1, x1, y2, x2);
+				}*/
+			}
+			else if (y == 4 && (x > 0 && x < 8))
+			{
+				/*setfillstyle(SOLID_FILL, DARKGRAY);
+				bar(y1, x1, y2, x2);
+				if (x == 1 || x == 2)
+				{
+					setfillstyle(SOLID_FILL, YELLOW);
+					bar(y1, x1, y2, x2);
+				}
+				if (x == 6 || x == 7)
+				{
+					setfillstyle(SOLID_FILL, RED);
+					bar(y1, x1, y2, x2);
+				}*/
+			}
+			else if (y == 10 && (x > 0 && x < 8))
+			{
+				/*setfillstyle(SOLID_FILL, DARKGRAY);
+				bar(y1, x1, y2, x2);
+
+				if (x == 1 || x == 2)
+				{
+					setfillstyle(SOLID_FILL, CYAN);
+					bar(y1, x1, y2, x2);
+				}
+				if (x == 7 || x == 6)
+				{
+					setfillstyle(SOLID_FILL, BLUE);
+					bar(y1, x1, y2, x2);
+				}*/
+			}
+			else
+			{
+
+				B[y][x] = new Piece(White, Position(y, x), this);
+			}
+		}
+	}
+
+	B[0][1] = new Piece(green, Position(0, 1), this);
+	B[1][0] = new Piece(green, Position(1, 0), this);
+	B[1][2] = new Piece(green, Position(1, 2), this);
+	B[2][1] = new Piece(green, Position(2, 1), this);
+
+	Player P1(B[0][1], B[1][0], B[1][2], B[2][1]);
+
+	B[6][1] = new Piece(red, Position(6, 1), this);
+	B[7][0] = new Piece(red, Position(7, 0), this);
+	B[8][1] = new Piece(red, Position(8, 1), this);
+	B[7][2] = new Piece(red, Position(7, 2), this);
+	Player P6(B[6][1], B[7][0], B[8][1], B[7][2]);
+
+
+	B[6][13] = new Piece(purple, Position(6, 13), this);
+	B[7][12] = new Piece(purple, Position(7, 12), this);
+	B[8][13] = new Piece(purple, Position(8, 13), this);
+	B[7][14] = new Piece(purple, Position(7, 14), this);
+	Player P4(B[6][13], B[7][12], B[8][13], B[7][14]);
+
+
+	B[0][13] = new Piece(Cyan, Position(0, 13), this);
+	B[1][12] = new Piece(Cyan, Position(1, 12), this);
+	B[2][13] = new Piece(Cyan, Position(2, 13), this);
+	B[1][14] = new Piece(Cyan, Position(1, 14), this);
+
+	Player P3(B[0][13], B[1][12], B[2][13], B[1][14]);
+
+
+	player[0] = P1;
+	player[1] = P6;
+	player[2] = P4;
+	player[3] = P3;	
+
+}
+void Board::Init6()
 {
 
-	for (int i = 0; i < 15; i++)
+	for (int i = 0; i < 9; i++)
 	{
-		for (int c = 0; c < 9; c++)
+		for (int c = 0; c < 15; c++)
 		{
 			B[i][c] = nullptr;
 		}
@@ -153,9 +486,9 @@ void Board::init()
 	player = new Player[Nop];
 	
 	Turn = green;
-	for (int y = 0; y < 15; y++)
+	for (int y = 0; y < 9; y++)
 	{
-		for (int x = 0; x < 9; x++)
+		for (int x = 0; x < 15; x++)
 		{
 			//	int x1 = x * s, y1 = y * s, x2 = (x + 1) * s - 0, y2 = (y + 1) * s - 0;
 				//if ((x + y) % 2 == 0)
@@ -336,27 +669,172 @@ int Board::RollDice()
 }
 bool Board::IsValidSelection()
 {
-
 	if (B[S.r][S.c] != nullptr)
 		return B[S.r][S.c]->GetColor() == Turn;
 	else
 		return false;
-
-
 }
-bool Board::IsValidDestination(int DICE)
+bool Board::IsValidDestination(int Dr)
 {
-
-
-
-
-
-
-	return true;
-
-
-
-
+	Position temp = S;
+	Position T = S;
+	bool home = false;
+	for (int i = 0; i < Dr; i++)
+		{
+			if (B[S.r][S.c]->GetColor() == green)
+			{
+				if (T.r == 4 && T.c <= 3)
+				{
+					if ((Dr - i) + T.c <= 3)
+					{
+						T.c++;
+						home = true;
+					}
+					else home = false;
+				}
+			}
+			else if (B[S.r][S.c]->GetColor() == yellow)
+			{
+				if (T.r == 0 && T.c <= 4)
+				{
+					if ((Dr - i) + T.r <= 4)
+					{
+						T.r++;
+						home = true;
+					}
+					else home = false;
+				}
+			}
+			else if (B[S.r][S.c]->GetColor() == Cyan)
+			{
+				if (T.r == 0 && T.c <= 10)
+				{
+					if ((Dr - i) + T.r <= 3)
+					{
+						T.r++;
+						home = true;
+					}
+					else home = false;
+				}
+			}
+			else if (B[S.r][S.c]->GetColor() == purple)
+			{
+				if (T.r == 4 && T.c <= 14)
+				{
+					if ((Dr - i) + T.c <= 3)
+					{
+						T.c--;
+						home = true;
+					}
+					else home = false;
+				}
+			}
+			else if (B[S.r][S.c]->GetColor() == blue)
+			{
+				if (T.r == 8 && T.c <= 10)
+				{
+					if ((Dr - i) + T.r <= 3)
+					{
+						T.r--;
+						home = true;
+					}
+					else home = false;
+				}
+			}
+			else if (B[S.r][S.c]->GetColor() == red)
+			{
+				if (T.r == 8 && T.c <= 4)
+				{
+					if ((Dr - i) + T.r <= 3)
+					{
+						T.r--;
+						home = true;
+					}
+					else home = false;
+				}
+			}
+			if (temp.r == 3)
+			{
+				if (temp.c == 3 || temp.c == 9)
+					temp.r--;
+				if (home == false)
+					T.r--;
+				else if (temp.c == 14)
+				{
+					temp.r++;
+					if (home == false)
+					{
+						T.r++;
+					}
+				}
+				else
+				{
+					temp.c++;
+					if (home == false)
+						T.c++;
+				}
+			}
+			else if (temp.r == 0)
+			{
+				if (temp.c == 5 || temp.c == 11)
+					temp.r++;
+				if (home == false)
+					T.r++;
+				else
+				{
+					temp.c++;
+					if (home == false)
+						T.c++;
+				}
+			}
+			else if (temp.r == 5)
+			{
+				if (temp.c == 5 || temp.c == 11)
+				{
+					temp.r++;
+					if (home == false)
+						T.r--;
+				}
+				else if (temp.c == 0)
+				{
+					temp.r--;
+					if(home == false)
+						T.r--;
+				}
+				else
+				{
+					temp.c--; 
+					if(home == false)
+					{
+						T.c--;
+					}
+				}
+					
+			}
+			else if (temp.r == 8)
+			{
+				if (temp.c == 3 || temp.c == 9)
+				{
+					temp.r--;
+					if (home == false)
+						T.r--;
+				}
+				else 
+				{
+					temp.c--;
+					if (home == false)
+						T.c--;
+				}
+			}
+			else if (temp.c == 3 || temp.c == 9 || temp.c == 0)
+				temp.r--;
+			else if (temp.c == 5 || temp.c == 11 || temp.c == 14)
+				temp.r++;
+	}
+		if ((E.r == temp.r && E.c == temp.c) || ((E.r == T.r && E.c == T.c) && home == true))
+			return true;
+		else
+			return false;
 	//int a;
 	//if (S.r > E.r && S.c < E.c)
 	//{
@@ -412,7 +890,7 @@ void Board::MoveToSafe()
 }
 void Board::Play()
 {
-	init();
+	Init6();
 	PrintBoard();
 	D.DrawDice(0);
 	DisplayPieces();
@@ -423,7 +901,7 @@ void Board::Play()
 		DisplayMessage();
 	x:
 		int Di= D.GenerateNum();
-		//Di = 6;
+		Di =6;
 		D.DrawDice(1);delay(100); D.DrawDice(4); delay(100); D.DrawDice(3); delay(100); D.DrawDice(1); delay(100); D.DrawDice(5);
 		D.DrawDice(Di);
 		if (IsAtHome() == true && Di!=6)
@@ -446,7 +924,7 @@ void Board::Play()
 				}*/
 				if (IsValidSelection() != true)             //iskill false && kai
 				{
-					if (B[S.r][S.c]->IsOut == true)
+					if (B[S.r][S.c] !=nullptr && B[S.r][S.c]->IsOut == true)
 					{
 						B[S.r][S.c]->Move(B[S.r][S.c]->SP);
 						PrintBoard();
@@ -470,7 +948,6 @@ void Board::Play()
 		} while (!IsValidDestination(Di));
 		KillHappen();
 		B[S.r][S.c]->Move(E);
-		//KillHappen();
 		if (Di == 6)
 		{
 			PrintBoard();
@@ -505,7 +982,34 @@ void Board::UpdateBoard()
 }
 bool Board::IsWin()
 {
-	return true;
+	Position E1(4, 4), E2(10, 4);
+	if (E.r == E1.r && E.c == E1.c)
+	{
+		if (B[E.r][E.r]->GetColor() == green)
+			player[0].count--;
+		else if (B[E.r][E.r]->GetColor() == yellow)
+			player[1].count--;
+		else if (B[E.r][E.r]->GetColor() == red)
+			player[5].count--;
+	}
+	if (E.r == E2.r && E.c == E2.c)
+	{
+		if (B[E.r][E.r]->GetColor() == Cyan)
+			player[2].count--;
+		else if (B[E.r][E.r]->GetColor() == purple)
+			player[3].count--;
+		else if (B[E.r][E.r]->GetColor() == blue)
+			player[4].count--;
+	}
+	for (int i = 0; i < 6; i++)
+	{
+		if (player[i].count == 0)
+		{
+			player[i].isWin = true;
+			return true;
+		}
+	}
+	return false;
 }
 void Board::TurnChange()
 {
