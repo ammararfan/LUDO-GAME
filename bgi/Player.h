@@ -24,6 +24,8 @@ public:
 		Goti[1] = p2;
 		Goti[2] = p3;
 		Goti[3] = p4;
+		count = 4;
+		isWin = false;
 	}
 	
 

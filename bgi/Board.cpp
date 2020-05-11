@@ -155,6 +155,26 @@ void Board::DisplayPieces()
 		}
 	}
 }
+void Board::init()
+{
+	cout << "Enter nop";
+	cin >> Nop;
+
+	switch (Nop)
+	{
+		case 2:
+			Init2();
+			break;
+		case 4:
+			Init4();
+			break;
+		case 6:
+			Init6();
+			break;
+	default:
+		break;
+	}
+}
 void Board::Init2()
 {
 	for (int i = 0; i < 9; i++)
@@ -301,9 +321,9 @@ void Board::Init2()
 	B[7][14] = new Piece(purple, Position(7, 14), this);
 	Player P4(B[6][13], B[7][12], B[8][13], B[7][14]);
 
-
 	player[0] = P1;
 	player[1] = P4;
+	
 }
 void Board::Init4()
 {
@@ -467,9 +487,9 @@ void Board::Init4()
 
 
 	player[0] = P1;
-	player[1] = P6;
+	player[1] = P3;
 	player[2] = P4;
-	player[3] = P3;	
+	player[3] = P6;	
 
 }
 void Board::Init6()
@@ -685,7 +705,7 @@ bool Board::IsValidDestination(int Dr)
 			{
 				if (T.r == 4 && T.c <= 3)
 				{
-					if ((Dr - i) + T.c <= 3)
+					if ((Dr - i) + T.c <= 4)
 					{
 						T.c++;
 						home = true;
@@ -695,7 +715,7 @@ bool Board::IsValidDestination(int Dr)
 			}
 			else if (B[S.r][S.c]->GetColor() == yellow)
 			{
-				if (T.r == 0 && T.c <= 4)
+				if (T.r <= 3 && T.c == 4)
 				{
 					if ((Dr - i) + T.r <= 4)
 					{
@@ -707,9 +727,9 @@ bool Board::IsValidDestination(int Dr)
 			}
 			else if (B[S.r][S.c]->GetColor() == Cyan)
 			{
-				if (T.r == 0 && T.c <= 10)
+				if (T.r <= 3 && T.c == 10)
 				{
-					if ((Dr - i) + T.r <= 3)
+					if ((Dr - i) + T.r <= 4)
 					{
 						T.r++;
 						home = true;
@@ -719,9 +739,9 @@ bool Board::IsValidDestination(int Dr)
 			}
 			else if (B[S.r][S.c]->GetColor() == purple)
 			{
-				if (T.r == 4 && T.c <= 14)
+				if (T.r == 4 && T.c >= 10)
 				{
-					if ((Dr - i) + T.c <= 3)
+					if ((Dr - i) - T.c <= -10)
 					{
 						T.c--;
 						home = true;
@@ -731,9 +751,9 @@ bool Board::IsValidDestination(int Dr)
 			}
 			else if (B[S.r][S.c]->GetColor() == blue)
 			{
-				if (T.r == 8 && T.c <= 10)
+				if (T.r >= 5 && T.c == 10)
 				{
-					if ((Dr - i) + T.r <= 3)
+					if ((Dr - i) + T.r >= -4)
 					{
 						T.r--;
 						home = true;
@@ -743,9 +763,9 @@ bool Board::IsValidDestination(int Dr)
 			}
 			else if (B[S.r][S.c]->GetColor() == red)
 			{
-				if (T.r == 8 && T.c <= 4)
+				if (T.r >= 5 && T.c == 4)
 				{
-					if ((Dr - i) + T.r <= 3)
+					if ((Dr - i) - T.r >= -4)
 					{
 						T.r--;
 						home = true;
@@ -756,9 +776,11 @@ bool Board::IsValidDestination(int Dr)
 			if (temp.r == 3)
 			{
 				if (temp.c == 3 || temp.c == 9)
+				{
 					temp.r--;
-				if (home == false)
-					T.r--;
+					if (home == false)
+						T.r--;
+				}
 				else if (temp.c == 14)
 				{
 					temp.r++;
@@ -777,9 +799,11 @@ bool Board::IsValidDestination(int Dr)
 			else if (temp.r == 0)
 			{
 				if (temp.c == 5 || temp.c == 11)
+				{
 					temp.r++;
-				if (home == false)
-					T.r++;
+					if (home == false)
+						T.r++;
+				}
 				else
 				{
 					temp.c++;
@@ -826,10 +850,18 @@ bool Board::IsValidDestination(int Dr)
 						T.c--;
 				}
 			}
-			else if (temp.c == 3 || temp.c == 9 || temp.c == 0)
-				temp.r--;
-			else if (temp.c == 5 || temp.c == 11 || temp.c == 14)
-				temp.r++;
+			else
+			{
+				if (temp.c == 9 || temp.c == 0)
+					temp.r--;
+				else if (temp.c == 3 && temp.r != 4)
+					temp.r--;
+				else if ((temp.c == 5 || temp.c == 14))
+					temp.r++;
+				else if (temp.c == 11 && temp.r != 4)
+					temp.r++;
+			}
+				
 	}
 		if ((E.r == temp.r && E.c == temp.c) || ((E.r == T.r && E.c == T.c) && home == true))
 			return true;
@@ -890,7 +922,8 @@ void Board::MoveToSafe()
 }
 void Board::Play()
 {
-	Init6();
+	//Init6();
+	init();
 	PrintBoard();
 	D.DrawDice(0);
 	DisplayPieces();
@@ -956,7 +989,8 @@ void Board::Play()
 		}
 		if (IsWin())
 		{
-
+			outtextxy(700, 500, "WINNER");
+			break;
 		}
 		TurnChange();
 	} while (!GameOver());
@@ -964,12 +998,79 @@ void Board::Play()
 }
 bool Board::IsAtHome()
 {
-	for (int i = 0; i < 4; i++)
+
+	switch (Nop)
 	{
-		if(player[Turn].Goti[i]->IsOut == true)
-		return false;
+	case 2:
+	{
+		if (Turn == purple)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				if (player[1].Goti[i]->IsOut == true)
+					return false;
+			}
+		}
+		if (Turn == green)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				if (player[0].Goti[i]->IsOut == true)
+					return false;
+			}
+		}
+		return true;
+		break;
 	}
-	return true;
+	case 4:
+	{
+		{
+			if (Turn == purple)
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					if (player[2].Goti[i]->IsOut == true)
+						return false;
+				}
+			}
+			if (Turn == green)
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					if (player[0].Goti[i]->IsOut == true)
+						return false;
+				}
+			}
+			if (Turn == red)
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					if (player[3].Goti[i]->IsOut == true)
+						return false;
+				}
+			}
+			if (Turn ==Cyan)
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					if (player[1].Goti[i]->IsOut == true)
+						return false;
+				}
+			}
+			return true;
+			break;
+		}
+	}
+	case 6:
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (player[Turn].Goti[i]->IsOut == true)
+				return false;
+		}
+		return true;
+	}
+	}
 	//player[0]
 }
 void Board::Move()
@@ -986,60 +1087,117 @@ bool Board::IsWin()
 	if (E.r == E1.r && E.c == E1.c)
 	{
 		if (B[E.r][E.r]->GetColor() == green)
+		{
+			player[0].Goti[green]->IsOut = false;
 			player[0].count--;
+		}
 		else if (B[E.r][E.r]->GetColor() == yellow)
+		{
 			player[1].count--;
+			player[1].Goti[yellow]->IsOut = false;
+		}
 		else if (B[E.r][E.r]->GetColor() == red)
+		{
+			player[5].Goti[red]->IsOut = false;
 			player[5].count--;
+
+		}
 	}
 	if (E.r == E2.r && E.c == E2.c)
 	{
 		if (B[E.r][E.r]->GetColor() == Cyan)
+		{
 			player[2].count--;
+			player[2].Goti[Cyan]->IsOut = false;
+		}
 		else if (B[E.r][E.r]->GetColor() == purple)
+		{
+			player[3].Goti[purple]->IsOut = false;
 			player[3].count--;
+		}
 		else if (B[E.r][E.r]->GetColor() == blue)
+		{
+			player[4].Goti[blue]->IsOut = false;
 			player[4].count--;
+		}
 	}
+	int wc = 0;
 	for (int i = 0; i < 6; i++)
 	{
 		if (player[i].count == 0)
 		{
 			player[i].isWin = true;
-			return true;
+			//player[i].Goti[Turn]->IsOut = false;
+			wc++;
+			//return true;
 		}
+	}
+	if (wc==4)
+	{
+		return true;
 	}
 	return false;
 }
 void Board::TurnChange()
 {
-	if (Turn == green)
+	switch (Nop)
 	{
-		Turn = yellow;
-	}
-	else if (Turn == yellow)
-	{
-		Turn = Cyan;
-	}
-	else if (Turn == Cyan)
-	{
-		Turn = purple;
-	}
-	else if (Turn == purple)
-	{
-		Turn = blue;
-	}
-	else if (Turn == blue)
-	{
-		Turn = red;
-	}
-	else if (Turn == red)
-	{
-		Turn = green;
-	}
+	case 6:
+		if (Turn == green)
+		{
+			Turn = yellow;
+		}
+		else if (Turn == yellow)
+		{
+			Turn = Cyan;
+		}
+		else if (Turn == Cyan)
+		{
+			Turn = purple;
+		}
+		else if (Turn == purple)
+		{
+			Turn = blue;
+		}
+		else if (Turn == blue)
+		{
+			Turn = red;
+		}
+		else if (Turn == red)
+		{
+			Turn = green;
+		}
+		break;
+	case 4:
 
-
-
+		if (Turn == green)
+		{
+			Turn = Cyan;
+		}
+		else if (Turn == Cyan)
+		{
+			Turn = purple;
+		}
+		else if (Turn == purple)
+		{
+			Turn = red;
+		}
+		else if (Turn == red)
+		{
+			Turn = green;
+		}
+		break;
+	case 2:
+		if (Turn == green)
+		{
+			Turn = purple;
+		}
+		else if (Turn == purple)
+		{
+			Turn = green;
+		}
+		break;
+	}
 }
 void Board::DisplayMessage()
 {
@@ -1119,7 +1277,7 @@ void Board::SelectDestination()
 }
 void Board::KillHappen()
 {
-	if (B[E.r][E.c] != nullptr && B[E.r][E.c]->GetColor() != Turn && B[E.r][E.c]->GetColor() != White)
+	if (B[E.r][E.c] != nullptr && B[E.r][E.c]->GetColor() != Turn && B[E.r][E.c]->GetColor() != White  &&  !IsLocoSafe(E))
 	{
 	//	B[E.r][E.c] = nullptr;
 		//B[B[E.r][E.c]->Org.r][B[E.r][E.c]->Org.c]=B[E.r][E.c];
