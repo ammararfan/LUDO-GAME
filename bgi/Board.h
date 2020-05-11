@@ -33,6 +33,7 @@ public:
 	void PrintBoard();   //Prints the Board
 	void Play();     //Main Flow in this function
 	void Move(); //Updates The Board (Pieces Array)
+	bool anymovesleft(int Dr);
 	void UpdateBoard(); // Move function
 	bool IsWin(); // Checks for is win (all 4 pugi?)
 	void TurnChange(); // changes turn

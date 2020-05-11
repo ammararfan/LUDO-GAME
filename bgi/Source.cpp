@@ -115,7 +115,7 @@ void Board4Player()
 }
 int main()
 {
-	initwindow(800, 800, "Lodu");
+	initwindow(800, 800, "Ludo");
 	Board B;
 	B.Play();
 	delay(100000000000000000);

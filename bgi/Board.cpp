@@ -694,6 +694,110 @@ bool Board::IsValidSelection()
 	else
 		return false;
 }
+bool Board::anymovesleft(int Dr)
+{
+	bool lmove;
+	Position lol;
+	int i = turn;
+	for (int pi = 0; pi < 4; pi++)
+	{
+		lol.r = player[turn].Goti[pi]->p.r;
+		lol.c = player[turn].Goti[pi]->p.c;
+		switch (Dr)
+		{
+		   case 1:
+			   return true;
+			 //  player[turn].Goti[pi]->Lmove = true;
+			break;
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			if (i == green)
+			{
+				if (lol.r == 4 && lol.c + Dr > 4)
+					lmove = false;
+				else
+					return true;
+					//player[turn].Goti[pi]->Lmove = true;
+			}
+			if (i == yellow)
+			{
+				if (lol.c == 4 && lol.r + Dr > 4)
+					lmove = false;
+					//player[turn].Goti[pi]->Lmove = false;
+				else 
+					return true;//player[turn].Goti[pi]->Lmove = true;
+			}
+			if (i == Cyan)
+			{
+				if (lol.c == 10 && lol.r + Dr > 4)
+					lmove = false;
+					//player[turn].Goti[pi]->Lmove = false;
+				else 
+					return true;//player[turn].Goti[pi]->Lmove = true;
+			}
+			if (i == purple)
+			{
+				if (lol.r == 4 && lol.c - Dr < 10)
+					lmove = false;
+				else return true;
+				//player[turn].Goti[pi]->Lmove = true;
+			}
+			if (i == blue)
+			{
+				if (lol.c == 10 && lol.r - Dr < 4)
+					lmove = false;
+				else return true; //player[turn].Goti[pi]->Lmove = true;
+			}
+			if (i == red)
+			{
+				if (lol.c == 4 && lol.c - Dr < 4)
+					lmove = false;
+				else return true; //player[turn].Goti[pi]->Lmove = true;
+			}
+			break;
+		   case 6:
+			   if (i == green || i == purple)
+			   {
+				   if (lol.r == 4)
+					   lmove = false;
+				   else if (lol.r == 5 && lol.c == 0 && i == green)
+					   lmove = false;
+				   else if (lol.r == 3 && lol.c == 0 && i == purple)
+					   lmove = false;
+				   else return true;
+			   }
+			   if (i == yellow || i == red)
+			   {
+				   if (lol.c == 4)
+					   lmove = false;
+				   else if (lol.r == 3 && lol.c == 0 && i == yellow)
+					   lmove = false;
+				   else if (lol.r == 5 && lol.c == 0 && i == red)
+					   lmove = false;
+				   else return true;
+			   }
+			   if (i == Cyan || i == blue)
+			   {
+				   if (lol.c == 10)
+					   lmove = false;
+				   else if (lol.r == 0 && lol.c == 9 && i == Cyan)
+					   lmove = false;
+				   else if (lol.r == 8 && lol.c == 11 && i == blue)
+					   lmove = false;
+				   else return true;
+			   }
+			   break;
+
+		}
+
+	}
+	return false;
+	
+}
+
+
 bool Board::IsValidDestination(int Dr)
 {
 	Position temp = S;
@@ -860,8 +964,7 @@ bool Board::IsValidDestination(int Dr)
 					temp.r++;
 				else if (temp.c == 11 && temp.r != 4)
 					temp.r++;
-			}
-				
+			}	
 	}
 		if ((E.r == temp.r && E.c == temp.c) || ((E.r == T.r && E.c == T.c) && home == true))
 			return true;
@@ -899,12 +1002,10 @@ bool Board::IsValidDestination(int Dr)
 	//if (S.r == E.r && S.c < E.c)
 	//{
 	//	a = E.c - S.c;
-
 	//}
 	//if (S.r == E.r && S.c > E.c)
 	//{
 	//	a = S.c - E.c;
-
 	//}
 	//return((B[E.r][E.c] != nullptr && (B[E.r][E.c]->GetColor() == White || B[E.r][E.c]->GetColor() != Turn) && (a == DICE)));
 	//return B[E.r][E.c] == nullptr || B[E.r][E.c]->GetColor() != Turn;
@@ -934,7 +1035,7 @@ void Board::Play()
 		DisplayMessage();
 	x:
 		int Di= D.GenerateNum();
-		Di =4;
+		//Di =6;
 		D.DrawDice(1);delay(100); D.DrawDice(4); delay(100); D.DrawDice(3); delay(100); D.DrawDice(1); delay(100); D.DrawDice(5);
 		D.DrawDice(Di);
 		if (IsAtHome() == true && Di!=6)
@@ -948,6 +1049,10 @@ void Board::Play()
 		{
 			do
 			{
+				if (!anymovesleft(Di) && Di!=6)
+				{
+					goto y;
+				}
 				SelectPiece();
 				if (IsValidSelection() != true)            
 					cout << "Invalid destination";
@@ -968,6 +1073,7 @@ void Board::Play()
 			if (Di == 6 && B[S.r][S.c]->IsOut == false)
 			{
 				B[S.r][S.c]->IsOut = true;
+				//B[S.r][S.c]->lmove = true;
 				B[S.r][S.c]->Move(B[S.r][S.c]->SP);
 				PrintBoard();
 				DisplayPieces();
@@ -992,7 +1098,11 @@ void Board::Play()
 			outtextxy(700, 500, "WINNER");
 			break;
 		}
-		TurnChange();
+		y:
+		do 
+		{
+			TurnChange();
+		} while (!IsAtHome());
 	} while (!GameOver());
 	DisplayWinnerMessage();
 }
