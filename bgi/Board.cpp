@@ -934,7 +934,7 @@ void Board::Play()
 		DisplayMessage();
 	x:
 		int Di= D.GenerateNum();
-		Di =6;
+		Di =4;
 		D.DrawDice(1);delay(100); D.DrawDice(4); delay(100); D.DrawDice(3); delay(100); D.DrawDice(1); delay(100); D.DrawDice(5);
 		D.DrawDice(Di);
 		if (IsAtHome() == true && Di!=6)
@@ -1122,7 +1122,7 @@ bool Board::IsWin()
 		}
 	}
 	int wc = 0;
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < Nop; i++)
 	{
 		if (player[i].count == 0)
 		{
