@@ -10,10 +10,11 @@ class Piece
 	Position Org;
 	Color Col;
 	Board* B;
-	bool IsOut;        // Is on Board or At Home
 	bool IsSafe;     // Is on stop or not
 	friend class Board;
 public:
+	bool IsOut=false;        // Is on Board or At Home
+
 	Position SP;
 	Piece() {}
 	Piece(Color C, Position P, Board* b);

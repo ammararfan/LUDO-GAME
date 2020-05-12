@@ -13,11 +13,11 @@ protected:
 	Position S, E;
 	Player* player;
 	Color Turn;
-	int turn = 0;
+	//int turn = 0;
 public:
-	Board() {
-		Init6();
-
+	Board() 
+	{
+		init();
 	}
 	bool IsLocoSafe(Position Lame);
 	bool IsAtHome();
@@ -27,6 +27,7 @@ public:
 	void Init6();
 	void Init4();
 	void Init2();
+	//bool IAML();
 	int RollDice(); //returns random num from 1-6; In case of Three 6 return 0
 	bool IsValidSelection(); //checks for valid piece selection
 	bool IsValidDestination(int Di); //checks for valid destination
