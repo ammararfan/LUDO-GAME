@@ -601,7 +601,7 @@ void Board::Init6()
 					bar(y1, x1, y2, x2);
 				}*/
 			}
-			else if (y == 10 && (x > 0 && x < 8))
+			else if (y == 10 && (x > 0 && x < 8)) 
 			{
 				/*setfillstyle(SOLID_FILL, DARKGRAY);
 				bar(y1, x1, y2, x2);
