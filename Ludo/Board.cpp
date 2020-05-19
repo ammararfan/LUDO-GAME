@@ -8,7 +8,10 @@ void Board6Player()
 	{
 		for (int x = 0; x < 9; x++)
 		{
-			int x1 = x * s, y1 = y * s, x2 = (x + 1) * s - 0, y2 = (y + 1) * s - 0;
+			int x1 = x * s,
+				y1 = y * s,
+				x2 = (x + 1) * s,
+				y2 = (y + 1) * s;
 			//if ((x + y) % 2 == 0)
 			if ((y >= 0 && y < 3) && (x >= 0 && x < 3))
 			{
@@ -174,6 +177,8 @@ void Board::init()
 	default:
 		break;
 	}
+	B[4][4] = new Piece(White, Position(4, 4), this);
+	B[4][10] = new Piece(White, Position(4, 10), this);
 }
 void Board::Init2()
 {
@@ -706,10 +711,14 @@ int Board::RollDice()
 }
 bool Board::IsValidSelection()
 {
-	return (B[S.r][S.c] != nullptr || B[S.r][S.c]->GetColor() == Turn);
+	/*if (B[S.r][S.c] == nullptr)
+		return false;*/
+	return (B[S.r][S.c] != nullptr&& B[S.r][S.c]->GetColor() != White && B[S.r][S.c]->GetColor() == Turn);
 }
 bool Board::anymovesleft(int Dr)
 {
+	if (IsAtHome() && Dr!=6)
+		return false;
 	switch (Nop)
 	{
 		case 2:
@@ -734,9 +743,8 @@ bool Board::anymovesleft(int Dr)
 				switch (Dr)
 				{
 				case 1:
-					return true;
-					//  player[turn].Goti[pi]->Lmove = true;
-					break;
+					if (player[c].Goti[pi]->IsOut == true)
+						return true;
 				case 2:
 				case 3:
 				case 4:
@@ -744,7 +752,7 @@ bool Board::anymovesleft(int Dr)
 					if (i == purple)
 					{
 						//cout << "Purple mein";
-						if (lol.r == 4 && (lol.c - Dr) < 10)
+						if (lol.r == 4 && (lol.c - Dr) < 10 && (lol.c - Dr) > 1)
 							continue;//lmove = false;
 						else return true;
 
@@ -753,7 +761,7 @@ bool Board::anymovesleft(int Dr)
 					if (i == green)
 					{
 						//cout << "Green mein";
-						if (lol.r == 4 && (lol.c + Dr) > 4)
+						if (lol.r == 4 && (lol.c + Dr) > 4 && (lol.c + Dr) < 13)
 							continue;
 						else
 							return true;
@@ -770,6 +778,106 @@ bool Board::anymovesleft(int Dr)
 							continue; //lmove = false;
 						else if (lol.r == 3 && (lol.c == 0 )&& (i == purple))
 							continue; //lmove = false;
+						else return true;
+					}
+					break;
+				}
+			}
+			break;
+		}
+		case 4:
+		{
+			//cout << "A gya A gya A gya!!!!!!";
+			int c = 0;
+			if (Turn == green)
+				c = 0;
+			else if (Turn == Cyan)
+				c = 1;
+			else if (Turn == purple)
+				c = 2;
+			else if (Turn ==red)
+				c = 3;
+
+			Position lol;
+			Color i = Turn;
+			for (int pi = 0; pi < 4; pi++)
+			{
+				if (((player[c].Goti[pi]->p.r == player[c].Goti[pi]->Org.r)
+					&& (player[c].Goti[pi]->p.c == player[c].Goti[pi]->Org.c)) && Dr != 6)
+				{
+					continue;
+				}
+				lol.r = player[c].Goti[pi]->p.r;
+				lol.c = player[c].Goti[pi]->p.c;
+				switch (Dr)
+				{
+				case 1:
+					if (player[c].Goti[pi]->IsOut == true)
+						return true;
+					break;
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+					if (i == purple)
+					{
+						//cout << "Purple mein";
+						if (lol.r == 4 && (lol.c - Dr) < 10 && (lol.c - Dr) > 1)
+							continue;//lmove = false;
+						else return true;
+
+						//player[turn].Goti[pi]->Lmove = true;
+					}
+					if (i == Cyan)
+					{
+						if (lol.c == 10 && (lol.r + Dr) > 4 && (lol.r + Dr) < 8)
+							continue;	//lmove = false;
+							//player[turn].Goti[pi]->Lmove = false;
+						else
+							return true;//player[turn].Goti[pi]->Lmove = true;
+					}
+					if (i == green)
+					{
+						//cout << "Green mein";
+						if (lol.r == 4 && (lol.c + Dr) > 4 && (lol.c + Dr) < 14)
+							continue;
+						else
+							return true;
+						//player[turn].Goti[pi]->Lmove = true;
+					}
+					if (i == red)
+					{
+						if (lol.c == 4 && (lol.r - Dr) < 4 && (lol.r - Dr) > 0)
+							continue;//lmove = false;
+						else return true; //player[turn].Goti[pi]->Lmove = true;
+					}
+					break;
+				case 6:
+					if ((i == green) || (i == purple))
+					{
+						//cout << "case 6";
+						if (lol.r == 4)
+							continue;//lmove = false;
+						else if ((lol.r == 5) && (lol.c == 0) && (i == green))
+							continue; //lmove = false;
+						else if (lol.r == 3 && (lol.c == 0) && (i == purple))
+							continue; //lmove = false;
+						else return true;
+					}
+					if (i == red)
+					{
+						if (lol.c == 4)
+							continue; // lmove = false;
+						else if (lol.r == 8 && (lol.c == 5) && i == red)
+							continue; // lmove = false;
+						else return true;
+					}
+					if (i == Cyan)
+					{
+						if (lol.c == 10)
+							continue;// lmove = false;
+						else if (lol.r == 0 && (lol.c == 9) && i == Cyan)
+							continue;//  lmove = false;
 						else return true;
 					}
 					break;
@@ -795,6 +903,8 @@ bool Board::anymovesleft(int Dr)
 				switch (Dr)
 				{
 				case 1:
+					if (player[Turn].Goti[pi]->IsOut == true)
+						return true;
 					//return true;
 					//  player[turn].Goti[pi]->Lmove = true;
 					//break;
@@ -804,7 +914,7 @@ bool Board::anymovesleft(int Dr)
 				case 5:
 					if (i == green)
 					{
-						if (lol.r == 4 && (lol.c + Dr > 4))
+						if (lol.r == 4 && (lol.c + Dr) > 4 && (lol.c + Dr) < 14)
 							continue;
 						else
 							return true;
@@ -812,7 +922,7 @@ bool Board::anymovesleft(int Dr)
 					}
 					if (i == yellow)
 					{
-						if (lol.c == 4 && (lol.r + Dr > 4))
+						if (lol.c == 4 && (lol.r + Dr) > 4 && (lol.r + Dr) < 8)
 							continue;
 						//lmove = false;
 							//player[turn].Goti[pi]->Lmove = false;
@@ -821,7 +931,7 @@ bool Board::anymovesleft(int Dr)
 					}
 					if (i == Cyan)
 					{
-						if (lol.c == 10 && (lol.r + Dr > 4))
+						if (lol.c == 10 && (lol.r + Dr) > 4 && (lol.r + Dr) < 8)
 							continue;	//lmove = false;
 							//player[turn].Goti[pi]->Lmove = false;
 						else
@@ -829,20 +939,20 @@ bool Board::anymovesleft(int Dr)
 					}
 					if (i == purple)
 					{
-						if (lol.r == 4 && (lol.c - Dr < 10))
+						if (lol.r == 4 && (lol.c - Dr) < 10 && (lol.c - Dr) > 0)
 							continue;//lmove = false;
 						else return true;
 						//player[turn].Goti[pi]->Lmove = true;
 					}
 					if (i == blue)
 					{
-						if (lol.c == 10 && (lol.r - Dr < 4))
+						if (lol.c == 10 && (lol.r - Dr) < 4 && (lol.r - Dr) > 0)
 							continue;//lmove = false;
 						else return true; //player[turn].Goti[pi]->Lmove = true;
 					}
 					if (i == red)
 					{
-						if (lol.c == 4 && (lol.c - Dr < 4))
+						if (lol.c == 4 && (lol.r - Dr) < 4 && (lol.r - Dr) > 0)
 							continue;//lmove = false;
 						else return true; //player[turn].Goti[pi]->Lmove = true;
 					}
@@ -1056,50 +1166,27 @@ bool Board::IsValidDestination(int Dr)
 					temp.r++;
 			}	
 	}
+	/*if ((E.r == temp.r && E.c == temp.c) && ((B[temp.r][temp.c] == nullptr) || (B[temp.r][temp.c]->GetColor() == White)) && IsLocoSafe(temp))
+		return true;
+	else
+		return false;*/
+	if (IsLocoSafe(temp) && (E.r == temp.r && E.c == temp.c))
+	{
+		if ((B[temp.r][temp.c] == nullptr) || (B[temp.r][temp.c]->GetColor() == White))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
 	if ((E.r == temp.r && E.c == temp.c) || ((E.r == T.r && E.c == T.c) && home == true))
 		return true;
 	else
-		cout << "lol noob u messed up!!!";
+		cout << "Invalid Destination!!!";
 		return false;
-	//int a;
-	//if (S.r > E.r && S.c < E.c)
-	//{
-	//	a = (S.r - E.r) + (E.c - S.c);
-	//}
-	//if (S.r < E.r && S.c < E.c)
-	//{
-	//	a = (E.r - S.r) + (E.c - S.c);
-	//}
-	//if (E.r-S.r==E.c-S.c)   //ahmad ka code
-	//{
-	//	a = E.r - S.r + E.c - S.c;
-	//}
-	//if (S.r < E.r && S.c > E.c)
-	//{
-	//	a = (E.r - S.r) + (S.c - E.c);
-	//}
-	//if (S.r > E.r && S.c > E.c)
-	//{
-	//	a = (S.r - E.r) + (S.c - E.c);
-	//}
-	//if (S.r < E.r && S.c == E.c)
-	//{
-	//	a = E.r - S.r;
-	//}
-	//if (S.r > E.r && S.c == E.c)
-	//{
-	//	a = S.r - E.r;
-	//}
-	//if (S.r == E.r && S.c < E.c)
-	//{
-	//	a = E.c - S.c;
-	//}
-	//if (S.r == E.r && S.c > E.c)
-	//{
-	//	a = S.c - E.c;
-	//}
-	//return((B[E.r][E.c] != nullptr && (B[E.r][E.c]->GetColor() == White || B[E.r][E.c]->GetColor() != Turn) && (a == DICE)));
-	//return B[E.r][E.c] == nullptr || B[E.r][E.c]->GetColor() != Turn;
 }
 void Board::PrintBoard()
 {
@@ -1142,11 +1229,10 @@ void Board::MoveToSafe()
 //}
 void Board::Play()
 {
-
+	PrintBoard();
 	do
 	{
 	x:
-		PrintBoard();
 		DisplayPieces();
 		DisplayMessage();
 		int Di= D.GenerateNum();
@@ -1155,9 +1241,9 @@ void Board::Play()
 		D.DrawDice(Di);
 		if (IsAtHome() == true && Di!=6)
 		{
-			//delay(500); // sesky
+			//delay(500); 
 			TurnChange();
-			//DisplayMessage(); // berry berry sesky
+			//DisplayMessage(); 
 			goto x;
 		}
 		do
@@ -1178,7 +1264,7 @@ void Board::Play()
 				}*/
 				SelectPiece();
 				if (IsValidSelection() != true)            
-					cout << "Invalid destination";
+					cout << "Invalid selection";
 				if (IsValidSelection() != true)             //iskill false && kai
 				{
 					if (B[S.r][S.c] !=nullptr && B[S.r][S.c]->IsOut == true)
@@ -1205,6 +1291,7 @@ void Board::Play()
 		} while (!IsValidDestination(Di));
 		KillHappen();
 		B[S.r][S.c]->Move(E);
+		PrintBoard();
 		if (Di==6)
 		{
 			goto x;
@@ -1313,18 +1400,26 @@ bool Board::IsWin()
 		Position E1(4, 4), E2(4, 10);
 		if (E.r == E1.r && E.c == E1.c)
 		{
-			if (B[E.r][E.r]->GetColor() == green)
+			if (B[E.r][E.c]->GetColor() == green)
 			{
-				player[0].Goti[green]->IsOut = false;
+				for (int  g = 0; g < 4; g++)
+				{
+					if (player[0].Goti[g]->p.r == E.r && player[0].Goti[g]->p.c == E.c)
+						player[0].Goti[g]->IsOut = false;					
+				}
 				player[0].count--;
 				cout << "Green ka count" << player[0].count;
 			}
 		}
-		else if (E.r == E2.r && E.c == E2.c)
+		if (E.r == E2.r && E.c == E2.c)
 		{
-			if (B[E.r][E.r]->GetColor() == purple)
+			if (B[E.r][E.c]->GetColor() == purple)
 			{
-			player[1].Goti[1]->IsOut = false;
+				for (int g = 0; g < 4; g++)
+				{
+					if (player[1].Goti[g]->p.r == E.r && player[1].Goti[g]->p.c == E.c)
+						player[1].Goti[g]->IsOut = false;
+				}
 			player[1].count--;
 			cout << "Purple ka count" << player[1].count;
 			}
@@ -1336,27 +1431,43 @@ bool Board::IsWin()
 		Position E1(4, 4), E2(4, 10);
 		if (E.r == E1.r && E.c == E1.c)
 		{
-			if (B[E.r][E.r]->GetColor() == green)
+			if (B[E.r][E.c]->GetColor() == green)
 			{
-				player[0].Goti[green]->IsOut = false;
+				for (int g = 0; g < 4; g++)
+				{
+					if (player[0].Goti[g]->p.r == E.r && player[0].Goti[g]->p.c == E.c)
+						player[0].Goti[g]->IsOut = false;
+				}
 				player[0].count--;
 			}
-			if (B[E.r][E.r]->GetColor() == red)
+			if (B[E.r][E.c]->GetColor() == red)
 			{
-				player[3].Goti[red]->IsOut = false;
+				for (int g = 0; g < 4; g++)
+				{
+					if (player[3].Goti[g]->p.r == E.r && player[3].Goti[g]->p.c == E.c)
+						player[3].Goti[g]->IsOut = false;
+				}
 				player[3].count--;
 			}
 		}
 		if (E.r == E2.r && E.c == E2.c)
 		{
-			if (B[E.r][E.r]->GetColor() == purple)
+			if (B[E.r][E.c]->GetColor() == purple)
 			{
-				player[2].Goti[purple]->IsOut = false;
+				for (int g = 0; g < 4; g++)
+				{
+					if (player[2].Goti[g]->p.r == E.r && player[2].Goti[g]->p.c == E.c)
+						player[2].Goti[g]->IsOut = false;
+				}
 				player[2].count--;
 			}
-			if (B[E.r][E.r]->GetColor() == Cyan)
+			if (B[E.r][E.c]->GetColor() == Cyan)
 			{
-				player[1].Goti[Cyan]->IsOut = false;
+				for (int g = 0; g < 4; g++)
+				{
+					if (player[1].Goti[g]->p.r == E.r && player[1].Goti[g]->p.c == E.c)
+						player[1].Goti[g]->IsOut = false;
+				}
 				player[1].count--;
 			}
 		}
@@ -1367,39 +1478,45 @@ bool Board::IsWin()
 		Position E1(4, 4), E2(4, 10);
 		if (E.r == E1.r && E.c == E1.c)
 		{
-			if (B[E.r][E.r]->GetColor() == green)
+			if (B[E.r][E.c]->GetColor() == green)
 			{
-				player[0].Goti[green]->IsOut = false;
+				//player[0].Goti[green]->IsOut = false;
 				player[0].count--;
 			}
-			else if (B[E.r][E.r]->GetColor() == yellow)
+			else if (B[E.r][E.c]->GetColor() == yellow)
 			{
 				player[1].count--;
-				player[1].Goti[yellow]->IsOut = false;
+				//player[1].Goti[yellow]->IsOut = false;
 			}
-			else if (B[E.r][E.r]->GetColor() == red)
+			else if (B[E.r][E.c]->GetColor() == red)
 			{
-				player[5].Goti[red]->IsOut = false;
+				//player[5].Goti[red]->IsOut = false;
 				player[5].count--;
 
 			}
 		}
 		if (E.r == E2.r && E.c == E2.c )
 		{
-			if (B[E.r][E.r]->GetColor() == Cyan)
+			if (B[E.r][E.c]->GetColor() == Cyan)
 			{
 				player[2].count--;
-				player[2].Goti[Cyan]->IsOut = false;
+				//player[2].Goti[Cyan]->IsOut = false;
 			}
-			else if (B[E.r][E.r]->GetColor() == purple)
+			else if (B[E.r][E.c]->GetColor() == purple)
 			{
-				player[3].Goti[purple]->IsOut = false;
+				//player[3].Goti[purple]->IsOut = false;
 				player[3].count--;
 			}
-			else if (B[E.r][E.r]->GetColor() == blue)
+			else if (B[E.r][E.c]->GetColor() == blue)
 			{
-				player[4].Goti[blue]->IsOut = false;
+				//player[4].Goti[blue]->IsOut = false;
 				player[4].count--;
+			}
+
+			for (int g = 0; g < 4; g++)
+			{
+				if (player[Turn].Goti[g]->p.r == E.r && player[Turn].Goti[g]->p.c == E.c)
+					player[Turn].Goti[g]->IsOut = false;
 			}
 		}
 		break;
@@ -1528,10 +1645,19 @@ void Board::DisplayWinnerMessage()
 }
 bool Board::IsLocoSafe(Position Lame)
 {
-	if ((Lame.r == 1 && Lame.c == 3) || (Lame.r == 5 && Lame.c == 1) || (Lame.r == 11 && Lame.c == 1)
-		||(Lame.r == 13 && Lame.c == 5) || (Lame.r == 9 && Lame.c == 7) || (Lame.r == 3 && Lame.c == 7))
-		return true;
-	else return false;
+	Position A[6];
+	A[0].r = 3, A[0].c = 1;
+	A[1].r = 1, A[1].c = 5;
+	A[2].r = 1, A[2].c = 11;
+	A[3].r = 5, A[3].c = 13;
+	A[4].r = 7, A[4].c = 9;
+	A[5].r = 7, A[5].c = 3;
+	for (int i = 0; i < 6; i++)
+	{
+		if (Lame.r == A[i].r && Lame.c == A[i].c)
+			return true;
+	}
+	return false;
 }
 void Board::DisplayKillMessage()
 {
@@ -1594,6 +1720,8 @@ void Board::Move(Position s, Position e)
 	/*B[e.r][e.c]->Draw();
 	B[s.r][s.c]->UnDraw();*/
 	B[s.r][s.c] = nullptr;
+	B[s.r][s.c] = new Piece(White,Position(s.r,s.c), this);
+
 }
 //bool Board::IsLegal(Position Ep)
 //{
