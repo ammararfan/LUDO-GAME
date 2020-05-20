@@ -50,5 +50,6 @@ public:
 	void Move(Position s, Position e);
 	void DiceRoll(int &Di);
 	void DrawDices();
+
 };
 
