@@ -2,6 +2,7 @@
 #include"Player.h"
 #include"Dice.h"
 #include"graphics.h"
+#include<fstream>
 class Piece;
 class Board
 {
@@ -17,7 +18,7 @@ protected:
 public:
 	Board() 
 	{
-		init();
+		//init();
 	}
 	bool IsLocoSafe(Position Lame);
 	bool IsAtHome();
@@ -27,7 +28,8 @@ public:
 	void Init6();
 	void Init4();
 	void Init2();
-	//bool IAML();
+	void SaveGame();
+	void LoadGame();
 	int RollDice(); //returns random num from 1-6; In case of Three 6 return 0
 	bool IsValidSelection(); //checks for valid piece selection
 	bool IsValidDestination(int Di); //checks for valid destination
@@ -46,6 +48,7 @@ public:
 	bool GameOver();//Check for Game over condition;
 	void KillHappen();
 	void Move(Position s, Position e);
-	//bool IsLegal(Position Ep);
+	void DiceRoll(int &Di);
+	void DrawDices();
 };
 

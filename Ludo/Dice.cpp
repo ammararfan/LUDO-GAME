@@ -1,8 +1,7 @@
 #include "Dice.h"
 #include"graphics.h"
-void Dice::DrawDice(int Dn)
+void Dice::DrawDice(int Dn,int a, int b)
 {
-    int a = 40, b = 540;
     setfillstyle(1, WHITE);
     setcolor(DARKGRAY);
     bar(a, b, a + 80, b + 80);

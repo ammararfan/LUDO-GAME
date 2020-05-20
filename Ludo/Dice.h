@@ -10,7 +10,7 @@ class Dice
 public:
     int GenerateNum()
     {
-      /*  while (!ismouseclick(WM_LBUTTONDOWN))
+       /* while (!ismouseclick(WM_LBUTTONDOWN))
         {
             delay(500);
         }*/
@@ -19,7 +19,8 @@ public:
         Num = (rand() % 6) + 1;
         return Num;
     }
-    void DrawDice(int Dn);
+    
+    void DrawDice(int Dn, int a = 40, int b = 500);
 
 };
 

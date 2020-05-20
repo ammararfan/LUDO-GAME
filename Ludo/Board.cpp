@@ -161,10 +161,19 @@ void Board::DisplayPieces()
 }
 void Board::init()
 {
-	cout << "Enter nop";
-	cin >> Nop;
-	switch (Nop)
+	cout << "Enter S for save game and N for NewGame: (S/N)";
+	char inp;
+	cin >> inp;
+	if (inp == 'S' || inp == 's')
 	{
+		LoadGame();
+	}
+	else
+	{
+		cout << "Enter nop";
+		cin >> Nop;
+		switch (Nop)
+		{
 		case 2:
 			Init2();
 			break;
@@ -174,8 +183,9 @@ void Board::init()
 		case 6:
 			Init6();
 			break;
-	default:
-		break;
+		default:
+			break;
+		}
 	}
 	B[4][4] = new Piece(White, Position(4, 4), this);
 	B[4][10] = new Piece(White, Position(4, 10), this);
@@ -711,9 +721,7 @@ int Board::RollDice()
 }
 bool Board::IsValidSelection()
 {
-	/*if (B[S.r][S.c] == nullptr)
-		return false;*/
-	return (B[S.r][S.c] != nullptr&& B[S.r][S.c]->GetColor() != White && B[S.r][S.c]->GetColor() == Turn);
+	return (B[S.r][S.c]->GetColor() == Turn);
 }
 bool Board::anymovesleft(int Dr)
 {
@@ -1199,51 +1207,352 @@ void Board::MoveToSafe()
 
 	}
 }
-//bool Board::IAML()
-//{
-//	for (int di = 1; di <= 6; di++)
-//	{
-//		int counter = 0;
-//		for (int i = 0; i < 4; i++)
-//		{
-//
-//			S.r = player[Turn].Goti[i]->p.r;
-//			S.c = player[Turn].Goti[i]->p.c;
-//
-//			for (int r = 0; r < 9; r++)
-//			{
-//				for (int c = 0; c < 15; c++)
-//				{
-//					Position En(r, c);
-//					if (IsValidDestination(di, En))
-//					{
-//						//counter++;
-//						return true;
-//					}
-//				}
-//			}
-//		}
-//
-//	}
-//	return false;
-//}
+void Board::DiceRoll(int &Di)
+{
+	outtextxy(200, 500, "Dice Roll");
+	Position t;
+	while (!ismouseclick(WM_LBUTTONDOWN))
+	{
+		delay(500);
+	}
+	getmouseclick(WM_LBUTTONDOWN, t.c, t.r);
+	cout << t.r << " " << t.c << endl;
+	t.r = t.r / 50;
+	t.c = t.c / 50;
+	cout << t.r << " " << t.c;
+	if (t.r == 12 && t.c == 1)
+	{
+		Di = 1;
+	}
+	else if (t.r == 12 && t.c == 3)
+	{
+		Di = 2;
+	}
+	else if (t.r == 12 && t.c == 5)
+	{
+		Di = 3;
+	}
+	else if (t.r == 12 && t.c == 7)
+	{
+		Di = 4;
+	}
+	else if (t.r == 12 && t.c == 8)
+	{
+		Di = 5;
+	}
+	else if (t.r == 12 && t.c == 10)
+	{
+		Di = 6;
+	}
+	else
+		Di = D.GenerateNum();
+	outtextxy(200, 500, "                      ");
+}
+void Board::DrawDices()
+{
+	D.DrawDice(1, 40, 600);
+	D.DrawDice(2, 130, 600);
+	D.DrawDice(3, 220, 600);
+	D.DrawDice(4, 310, 600);
+	D.DrawDice(5, 400, 600);
+	D.DrawDice(6, 490, 600);
+}
+void Board::SaveGame()
+{
+	ofstream Wrt("SaveGame.txt");
+	Wrt << Nop << endl;
+	Wrt << Turn << endl;
+	for (int r = 0; r < 9; r++)
+	{
+		for (int c = 0; c < 15; c++)
+		{
+			if (B[r][c] != nullptr)
+			{
+				if (B[r][c]->GetColor() == red)
+				{
+					Wrt << "r";
+					Wrt << B[r][c]->IsOut;
+
+				}
+				if (B[r][c]->GetColor() == green)
+				{
+					Wrt << "g";
+					Wrt << B[r][c]->IsOut;
+
+				}
+				if (B[r][c]->GetColor() == blue)
+				{
+					Wrt << "b";
+					Wrt << B[r][c]->IsOut;
+
+				}
+				if (B[r][c]->GetColor() == yellow)
+				{
+					Wrt << "y";
+					Wrt << B[r][c]->IsOut;
+
+				}
+				if (B[r][c]->GetColor() == Cyan)
+				{
+					Wrt << "c";
+					Wrt << B[r][c]->IsOut;
+
+				}
+				if (B[r][c]->GetColor() == purple)
+				{
+					Wrt << "p";
+					Wrt << B[r][c]->IsOut;
+
+				}
+				if (B[r][c]->GetColor() == White)
+				{
+					Wrt << "w";
+					Wrt << B[r][c]->IsOut;
+				}
+				/*else
+				{
+					Wrt << "-";
+				}*/
+			}
+			else
+			{
+				Wrt << "w";
+				Wrt << 0;
+				//Wrt << B[r][c]->IsOut;
+			}
+		}
+		Wrt << endl;
+	}
+}
+void Board::LoadGame()
+{
+	ifstream rdr("SaveGame.txt");
+	char G;
+	rdr >> Nop;
+	int T;
+	rdr >> T;
+	switch (Nop)
+	{
+	case 2:
+		if (T == 0)
+			Turn == green;
+		else if(T==1)
+			Turn == purple;
+		break;
+	case 4:
+		if (T == 0)
+			Turn == green;
+		else if (T == 1)
+			Turn == Cyan;
+		else if (T == 2)
+			Turn == purple;
+		else if (T == 3)
+			Turn == red;
+		break;
+	case 6:
+		if (T == 0)
+			Turn == green;
+		else if (T == 1)
+			Turn == yellow;
+		else if (T == 2)
+			Turn == Cyan;
+		else if (T == 3)
+			Turn == purple;
+		else if (T == 4)
+			Turn == blue;
+		else if (T == 5)
+			Turn == red;
+		break;
+
+	default:
+		break;
+	}
+
+	for (int y = 0; y < 9; y++)
+	{
+		for (int x = 0; x < 15; x++)
+		{
+			//	int x1 = x * s, y1 = y * s, x2 = (x + 1) * s - 0, y2 = (y + 1) * s - 0;
+				//if ((x + y) % 2 == 0)
+			if ((y >= 0 && y < 3) && (x >= 0 && x < 3))
+			{
+				/*setfillstyle(SOLID_FILL, GREEN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 1 && x == 3)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 3 && x == 7)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+
+			else if (y == 9 && x == 7)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 5 && x == 1)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 11 && x == 1)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if (y == 13 && x == 5)
+			{
+				/*setfillstyle(SOLID_FILL, BROWN);
+				bar(y1, x1, y2, x2);*/
+			}
+
+
+
+			else if ((y >= 0 && y < 3) && (x >= 6 && x <= 8))
+			{
+				/*setfillstyle(SOLID_FILL, RED);
+				bar(y1, x1, y2, x2);*/
+			}
+			else if ((y >= 6 && y <= 8) && (x >= 6 && x <= 8))
+			{
+
+			}
+			else if ((y >= 6 && y <= 8) && (x >= 0 && x <= 2))
+			{
+			}
+			else if ((y >= 12 && y <= 14) && (x >= 6 && x <= 8))
+			{
+
+			}
+			else if ((y >= 12 && y <= 14) && (x >= 0 && x <= 2))
+			{
+
+			}
+			else if ((y > 0 && y < 14) && (x == 4))
+			{
+				/*setfillstyle(SOLID_FILL, DARKGRAY);
+				bar(y1, x1, y2, x2);
+				if (y == 1 || y == 2)
+				{
+					setfillstyle(SOLID_FILL, GREEN);
+					bar(y1, x1, y2, x2);
+				}
+				if (y == 12 || y == 13)
+				{
+					setfillstyle(SOLID_FILL, MAGENTA);
+					bar(y1, x1, y2, x2);
+				}*/
+			}
+			else if (y == 4 && (x > 0 && x < 8))
+			{
+				/*setfillstyle(SOLID_FILL, DARKGRAY);
+				bar(y1, x1, y2, x2);
+				if (x == 1 || x == 2)
+				{
+					setfillstyle(SOLID_FILL, YELLOW);
+					bar(y1, x1, y2, x2);
+				}
+				if (x == 6 || x == 7)
+				{
+					setfillstyle(SOLID_FILL, RED);
+					bar(y1, x1, y2, x2);
+				}*/
+			}
+			else if (y == 10 && (x > 0 && x < 8))
+			{
+				/*setfillstyle(SOLID_FILL, DARKGRAY);
+				bar(y1, x1, y2, x2);
+
+				if (x == 1 || x == 2)
+				{
+					setfillstyle(SOLID_FILL, CYAN);
+					bar(y1, x1, y2, x2);
+				}
+				if (x == 7 || x == 6)
+				{
+					setfillstyle(SOLID_FILL, BLUE);
+					bar(y1, x1, y2, x2);
+				}*/
+			}
+			else
+			{
+
+				B[y][x] = new Piece(White, Position(y, x), this);
+			}
+		}
+	}
+	//rdr >>Turn;
+	for (int r = 0; r < 9; r++)
+	{
+		for (int c = 0; c < 15; c++)
+		{
+			rdr >> G;
+			if (G=='r')
+			{
+				B[r][c]=new Piece(red, Position(r, c), this);
+				rdr >> B[r][c]->IsOut;
+
+			}
+			else if (G == 'c')
+			{
+				B[r][c] = new Piece(Cyan, Position(r, c), this);
+				rdr >> B[r][c]->IsOut;
+
+			}
+			else if (G == 'y')
+			{
+				B[r][c] = new Piece(yellow, Position(r, c), this);
+				rdr >> B[r][c]->IsOut;
+
+			}
+			else if (G == 'b')
+			{
+				B[r][c] = new Piece(blue, Position(r, c), this);
+				rdr >> B[r][c]->IsOut;
+			}
+			else if (G == 'p')
+			{
+				B[r][c] = new Piece(purple, Position(r, c), this);
+				rdr >> B[r][c]->IsOut;
+			}
+			else if (G == 'g')
+			{
+				B[r][c] = new Piece(green, Position(r, c), this);
+				rdr >> B[r][c]->IsOut;
+			}
+			else if (G == 'w')
+			{
+				B[r][c] = new Piece(White, Position(r, c), this);
+				rdr >> B[r][c]->IsOut;
+			}
+			/*else
+				B[r][c] = new Piece(White, Position(r, c), this);*/
+		}
+	}
+
+}
 void Board::Play()
 {
+	init();
 	PrintBoard();
 	do
 	{
 	x:
+		int Di;
 		DisplayPieces();
 		DisplayMessage();
-		int Di= D.GenerateNum();
-		//Di =6;
+		DrawDices();
+		DiceRoll(Di);
 		D.DrawDice(1);delay(100); D.DrawDice(4); delay(100); D.DrawDice(3); delay(100); D.DrawDice(1); delay(100); D.DrawDice(5);
 		D.DrawDice(Di);
 		if (IsAtHome() == true && Di!=6)
 		{
-			//delay(500); 
 			TurnChange();
-			//DisplayMessage(); 
 			goto x;
 		}
 		do
@@ -1256,18 +1565,12 @@ void Board::Play()
 					TurnChange();
 					goto x;
 				}
-				/*if (IAML())
-				{
-					cout << "Ham ko hamin se chura lo";
-					TurnChange();
-					goto x;
-				}*/
 				SelectPiece();
 				if (IsValidSelection() != true)            
 					cout << "Invalid selection";
 				if (IsValidSelection() != true)             //iskill false && kai
 				{
-					if (B[S.r][S.c] !=nullptr && B[S.r][S.c]->IsOut == true)
+					if (B[S.r][S.c]->GetColor() == Turn && B[S.r][S.c] != nullptr && B[S.r][S.c]->IsOut == true)
 					{
 						B[S.r][S.c]->Move(B[S.r][S.c]->SP);
 						PrintBoard();
@@ -1302,9 +1605,9 @@ void Board::Play()
 			outtextxy(700, 500, "WINNER");
 			break;
 		}
-		//ALI BOOOOOOOOOONNNNNNNNNNNNNNN!!!!!!!!
 	y:
 		TurnChange();
+		SaveGame();
 	} while (!GameOver());
 	DisplayWinnerMessage();
 }
@@ -1723,7 +2026,3 @@ void Board::Move(Position s, Position e)
 	B[s.r][s.c] = new Piece(White,Position(s.r,s.c), this);
 
 }
-//bool Board::IsLegal(Position Ep)
-//{
-//
-//}
